@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "appname",
-    "slug": "appname",
+    "name": "checklist",
+    "slug": "ak-checklist",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "appname",
@@ -9,7 +9,7 @@
     "icon": "./assets/images/icon.png",
     "android": {
       "backgroundColor": "#000000",
-      "package": "com.vandam.appname"
+      "package": "com.akimbo.checklist"
     },
     "plugins": [
       "expo-router",
