@@ -28,7 +28,6 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.0",
     "@types/react": "~19.2.10",
     "canvas": "^3.2.1",
     "eslint": "^9.39.2",
