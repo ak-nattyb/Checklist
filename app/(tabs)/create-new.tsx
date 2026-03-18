@@ -5,9 +5,17 @@ import { SearchInput } from "@/components/SearchInput";
 import { n } from "@/utils/scaling";
 import { useChecklistStore } from "@/contexts/Checklist";
 import { router } from "expo-router";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
+
+  useFocusEffect(
+    useCallback(() => {
+      setQuery("");
+    }, []),
+  );
 
   const addItem = () => {
     if (query.length === 0) return;

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     minWidth: n(200),
   },
   buttonText: {
-    fontSize: n(40),
+    fontSize: n(30),
     textTransform: "uppercase",
   },
 });

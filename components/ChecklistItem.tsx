@@ -35,7 +35,7 @@ export function ChecklistItem({
     >
       <MaterialIcons
         name={isStruckthrough ? "check-box" : "check-box-outline-blank"}
-        size={n(48)}
+        size={n(35)}
         color={"white"}
       />
       <StyledText style={styles.buttonText} numberOfLines={1}>
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "center",
+    gap: 10,
   },
   buttonText: {
     fontSize: n(30),
