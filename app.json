@@ -9,7 +9,8 @@
     "icon": "./assets/images/icon.png",
     "android": {
       "backgroundColor": "#000000",
-      "package": "com.akimbo.checklist"
+      "package": "com.akimbo.checklist",
+      "label": "Checklist"
     },
     "plugins": [
       "expo-router",
