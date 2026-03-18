@@ -5,21 +5,18 @@ import { ChecklistItem } from "@/components/ChecklistItem";
 import { useChecklistStore } from "@/contexts/Checklist";
 
 export default function Tab() {
-  const { items, deleteItem } = useChecklistStore();
+  const { items } = useChecklistStore();
 
   return (
     <ContentContainer
-      headerTitle="List Items"
+      headerTitle="Checklist"
       hideBackButton
       style={{ paddingHorizontal: n(20) }}
     >
       <CustomScrollView
         data={items}
         renderItem={({ item }) => (
-          <ChecklistItem
-            text={item.text}
-            onDelete={() => deleteItem(item.id)}
-          />
+          <ChecklistItem id={item.id} text={item.text} />
         )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ gap: n(28) }}

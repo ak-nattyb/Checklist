@@ -3,8 +3,11 @@ import { StyleSheet } from "react-native";
 import { StyledText } from "./StyledText";
 import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
+import { router } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface ButtonProps {
+  id: string; // Add this
   text: string;
   onPress?: () => void;
   onDelete?: () => void; // Add this
@@ -16,6 +19,7 @@ export function ChecklistItem({
   onPress,
   onDelete,
   strikethrough = false,
+  id,
 }: ButtonProps) {
   const [isStruckthrough, setIsStruckthrough] = useState(strikethrough);
 
@@ -27,12 +31,14 @@ export function ChecklistItem({
     <HapticPressable
       style={styles.button}
       onPress={flipUnderline}
-      onLongPress={onDelete}
+      onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
-      <StyledText
-        style={[styles.buttonText, isStruckthrough && styles.strikethrough]}
-        numberOfLines={1}
-      >
+      <MaterialIcons
+        name={isStruckthrough ? "check-box" : "check-box-outline-blank"}
+        size={n(48)}
+        color={"white"}
+      />
+      <StyledText style={styles.buttonText} numberOfLines={1}>
         {text}
       </StyledText>
     </HapticPressable>
@@ -47,8 +53,5 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: n(30),
-  },
-  strikethrough: {
-    textDecorationLine: "line-through",
   },
 });

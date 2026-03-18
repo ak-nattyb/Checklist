@@ -6,35 +6,39 @@ import { StyledText } from "@/components/StyledText";
 import { HapticPressable } from "@/components/HapticPressable";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
+import { useChecklistStore } from "@/contexts/Checklist";
 
 export default function ConfirmScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const deleteItem = useChecklistStore((state) => state.deleteItem);
   const router = useRouter();
   const { invertColors } = useInvertColors();
-  const params = useLocalSearchParams<{
-    title: string;
-    message: string;
-    confirmText: string;
-    action: string;
-    returnPath: string;
-  }>();
 
-  const handleConfirm = () => {
-    router.navigate({
-      pathname: (params.returnPath || "/index") as any,
-      params: { confirmed: "true", action: params.action },
-    });
-  };
+  function handleConfirm() {
+    deleteItem(id);
+    router.back();
+  }
+  function handleCancel() {
+    router.back();
+  }
 
   const textColor = invertColors ? "black" : "white";
 
   return (
-    <ContentContainer headerTitle={params.title || "Confirm"}>
-      <StyledText style={styles.messageText}>{params.message}</StyledText>
+    <ContentContainer headerTitle={"Confirm"}>
+      <StyledText style={styles.messageText}>
+        {"Are you sure you want to delete this?"}
+      </StyledText>
 
       <View style={styles.buttonContainer}>
         <HapticPressable onPress={handleConfirm} style={styles.button}>
           <StyledText style={[styles.buttonText, { color: textColor }]}>
-            {params.confirmText || "Confirm"}
+            {"yes"}
+          </StyledText>
+        </HapticPressable>
+        <HapticPressable onPress={handleCancel} style={styles.button}>
+          <StyledText style={[styles.buttonText, { color: textColor }]}>
+            {"no"}
           </StyledText>
         </HapticPressable>
       </View>
