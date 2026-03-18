@@ -7,10 +7,10 @@ import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
 interface ButtonProps {
-  id: string; // Add this
+  id: string;
   text: string;
   onPress?: () => void;
-  onDelete?: () => void; // Add this
+  onDelete?: () => void;
   strikethrough?: boolean;
 }
 
