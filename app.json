@@ -2,14 +2,15 @@
   "expo": {
     "name": "Checklist",
     "slug": "ak-checklist",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "orientation": "portrait",
     "scheme": "appname",
     "newArchEnabled": true,
     "icon": "./assets/images/icon.png",
     "android": {
       "backgroundColor": "#000000",
-      "package": "com.akimbo.checklist"
+      "package": "com.akimbo.checklist",
+      "label": "Checklist"
     },
     "plugins": [
       "expo-router",
