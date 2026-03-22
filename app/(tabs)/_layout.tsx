@@ -2,9 +2,13 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { Navbar, TabConfigItem } from "@/components/Navbar";
 
-export const TABS_CONFIG: ReadonlyArray<TabConfigItem> = [
-  { name: "Items", screenName: "index", iconName: "home" },
-  { name: "Add New Item", screenName: "create-new", iconName: "create" },
+export const TABS_CONFIG: readonly TabConfigItem[] = [
+  { name: "Items", screenName: "index", iconName: "list" },
+  {
+    name: "Add New Item",
+    screenName: "create-new",
+    iconName: "add-circle-outline",
+  },
 ] as const;
 
 export default function TabLayout() {
