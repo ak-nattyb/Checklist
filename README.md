@@ -25,4 +25,6 @@ Huge thank you to the following projects:
 
 ## Support
 
+Send me (rustybeets) a message on the Light Phone discord if you run into any issues!
+
 If you find this app useful and want more apps like it to exist, [consider sponsoring Vadamd](https://github.com/sponsors/vandamd)! :)
