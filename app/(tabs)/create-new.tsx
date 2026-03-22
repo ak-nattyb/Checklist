@@ -24,7 +24,6 @@ export default function CreateNew() {
   return (
     <ContentContainer
       headerTitle="Create New Item"
-      hideBackButton
       rightIcon="save"
       showRightIcon={query.length > 0}
       onRightIconPress={addItem}
