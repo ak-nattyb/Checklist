@@ -14,6 +14,7 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 ## Features
 
 - Add items to the list
+- Toggle the checkbox for each item
 - Long press on an item to delete
 - Checklist stores and persists between app loads/unloads and phone restarts
 
