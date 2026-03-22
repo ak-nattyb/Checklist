@@ -9,6 +9,7 @@ export const TABS_CONFIG: readonly TabConfigItem[] = [
     screenName: "create-new",
     iconName: "add-circle-outline",
   },
+  { name: "Settings", screenName: "settings", iconName: "settings" },
 ] as const;
 
 export default function TabLayout() {
