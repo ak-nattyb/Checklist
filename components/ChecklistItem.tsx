@@ -5,26 +5,28 @@ import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useChecklistStore } from "@/contexts/Checklist";
 
 interface ButtonProps {
   id: string;
   text: string;
   onPress?: () => void;
   onDelete?: () => void;
-  strikethrough?: boolean;
+  checked?: boolean;
 }
 
 export function ChecklistItem({
   text,
   onPress,
   onDelete,
-  strikethrough = false,
+  checked = false,
   id,
 }: ButtonProps) {
-  const [isStruckthrough, setIsStruckthrough] = useState(strikethrough);
+  const [isChecked, setIsChecked] = useState(checked);
 
   function flipUnderline() {
-    setIsStruckthrough((prev) => !prev); // Tell React the value changed → triggers re-render
+    setIsChecked((prev) => !prev);
+    useChecklistStore.getState().modifyItem(id);
   }
 
   return (
@@ -34,7 +36,7 @@ export function ChecklistItem({
       onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
       <MaterialIcons
-        name={isStruckthrough ? "check-box" : "check-box-outline-blank"}
+        name={isChecked ? "check-box" : "check-box-outline-blank"}
         size={n(35)}
         color={"white"}
       />

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Checklist",
     "slug": "ak-checklist",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "orientation": "portrait",
     "scheme": "appname",
     "newArchEnabled": true,

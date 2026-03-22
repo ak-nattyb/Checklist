@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import ContentContainer from "@/components/ContentContainer";
 import { SearchInput } from "@/components/SearchInput";
 import { n } from "@/utils/scaling";
 import { useChecklistStore } from "@/contexts/Checklist";
-import { router } from "expo-router";
-import { useFocusEffect } from "expo-router";
-import { useCallback } from "react";
+import { router, useFocusEffect } from "expo-router";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
