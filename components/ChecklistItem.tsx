@@ -6,6 +6,7 @@ import { n } from "@/utils/scaling";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useChecklistStore } from "@/contexts/Checklist";
+import { useInvertColors } from "@/contexts/InvertColorsContext";
 
 interface ButtonProps {
   id: string;
@@ -16,6 +17,7 @@ interface ButtonProps {
 }
 
 export function ChecklistItem({ text, onPress, onDelete, id }: ButtonProps) {
+  const { invertColors } = useInvertColors();
   const isChecked = useChecklistStore(
     (state) => state.items.find((item) => item.id === id)?.isChecked ?? false,
   );
@@ -33,7 +35,7 @@ export function ChecklistItem({ text, onPress, onDelete, id }: ButtonProps) {
       <MaterialIcons
         name={isChecked ? "check-box" : "check-box-outline-blank"}
         size={n(35)}
-        color={"white"}
+        color={invertColors ? "black" : "white"}
       />
       <StyledText style={styles.buttonText} numberOfLines={1}>
         {text}

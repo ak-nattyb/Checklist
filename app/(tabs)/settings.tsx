@@ -7,7 +7,7 @@ export default function SettingsScreen() {
   const { invertColors, setInvertColors } = useInvertColors();
 
   return (
-    <ContentContainer headerTitle="Customise Interface">
+    <ContentContainer headerTitle="Settings">
       <ToggleSwitch
         value={invertColors}
         label="Invert Colours"
