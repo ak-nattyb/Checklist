@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { StyledText } from "./StyledText";
 import { HapticPressable } from "./HapticPressable";
@@ -15,17 +15,12 @@ interface ButtonProps {
   checked?: boolean;
 }
 
-export function ChecklistItem({
-  text,
-  onPress,
-  onDelete,
-  checked = false,
-  id,
-}: ButtonProps) {
-  const [isChecked, setIsChecked] = useState(checked);
+export function ChecklistItem({ text, onPress, onDelete, id }: ButtonProps) {
+  const isChecked = useChecklistStore(
+    (state) => state.items.find((item) => item.id === id)?.isChecked ?? false,
+  );
 
   function flipUnderline() {
-    setIsChecked((prev) => !prev);
     useChecklistStore.getState().modifyItem(id);
   }
 
