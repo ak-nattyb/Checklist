@@ -20,14 +20,14 @@ export function ChecklistItem({ text, id }: ButtonProps) {
     (state) => state.items.find((item) => item.id === id)?.isChecked ?? false,
   );
 
-  function flipUnderline() {
+  function flipChecked() {
     useChecklistStore.getState().modifyItem(id);
   }
 
   return (
     <HapticPressable
       style={styles.button}
-      onPress={flipUnderline}
+      onPress={flipChecked}
       onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
       <MaterialIcons
