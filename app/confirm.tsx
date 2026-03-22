@@ -6,7 +6,7 @@ import { StyledText } from "@/components/StyledText";
 import { HapticPressable } from "@/components/HapticPressable";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
-import { useChecklistStore } from "@/contexts/Checklist";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 
 export default function ConfirmScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

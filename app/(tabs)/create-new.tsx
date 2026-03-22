@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import ContentContainer from "@/components/ContentContainer";
 import { SearchInput } from "@/components/SearchInput";
 import { n } from "@/utils/scaling";
-import { useChecklistStore } from "@/contexts/Checklist";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { router, useFocusEffect } from "expo-router";
 
 export default function CreateNew() {

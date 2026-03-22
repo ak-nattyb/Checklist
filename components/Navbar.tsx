@@ -13,7 +13,7 @@ export interface TabConfigItem {
 }
 
 interface NavbarProps {
-  tabsConfig?: ReadonlyArray<TabConfigItem>;
+  tabsConfig?: readonly TabConfigItem[];
   currentScreenName: string;
   navigation: BottomTabBarProps["navigation"];
 }

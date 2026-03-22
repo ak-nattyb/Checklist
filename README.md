@@ -1,30 +1,30 @@
-<img src="assets/images/example.png" alt="Example Template Screenshots">
+<img src="assets/images/example.png" alt="Checklist Screenshots">
 
-<p>A minimal Expo template to create a LightOS-inspired app.</p>
+<p>A app that adds a simple list with checkbox functionality for Light Phone/Luma users.</p>
 
-> [!NOTE]
-> This is very much a WIP. There's a lot of things I want to add but it'll take me a bit of time :)
+![GitHub License](https://img.shields.io/github/license/ak-nattyb/Checklist)
+![GitHub Release](https://img.shields.io/github/v/release/ak-nattyb/Checklist)
 
-## Quick Start
+## Installation
 
-1. Update `app.json` with your app name, slug, and package name
-3. Run `bunx expo run:android`
+The lastest .apk file is available in [releases](https://github.com/ak-nattyb/Checklist/releases/latest).
 
-## Commands
+I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding the repository's URL to receive updates.
 
-```bash
-bunx expo run:android  # Build and run (dev)
-eas build -p android --profile production --local  # Build APK locally
-bun run sync-version   # Sync version across files
-bun run generate-icon  # Generate icon from app name
-```
+## Features
 
-## GitHub Releases
+- Add items to the list
+- Long press on an item to delete
+- Checklist stores and persists between app loads/unloads and phone restarts
 
-Trigger the workflow manually in Actions tab. It builds an APK and creates a GitHub release tagged with the version from `app.json`. Changelog is auto-generated from commits since the last release.
+## Acknowledgements
 
-Requires `EXPO_TOKEN` secret in repo settings.
+Huge thank you to the following projects:
 
-## Detailed Docs
+- Vandamd's Light Template: [light-template]https://github.com/vandamd/light-template
 
-See [CLAUDE.md](./CLAUDE.md) for complete component reference, patterns, and examples.
+## Support
+
+Send me (rustybeets) a message on the Light Phone discord if you run into any issues!
+
+If you find this app useful and want more apps like it to exist, [consider sponsoring Vadamd](https://github.com/sponsors/vandamd)! :)

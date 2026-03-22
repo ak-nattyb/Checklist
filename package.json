@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.10",
+    "baseline-browser-mapping": "^2.10.10",
     "canvas": "^3.2.1",
     "eslint": "^9.39.2",
     "eslint-config-expo": "~55.0.0",
