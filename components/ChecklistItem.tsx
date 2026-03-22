@@ -5,18 +5,16 @@ import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useChecklistStore } from "@/contexts/Checklist";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 
 interface ButtonProps {
   id: string;
   text: string;
-  onPress?: () => void;
-  onDelete?: () => void;
   checked?: boolean;
 }
 
-export function ChecklistItem({ text, onPress, onDelete, id }: ButtonProps) {
+export function ChecklistItem({ text, id }: ButtonProps) {
   const { invertColors } = useInvertColors();
   const isChecked = useChecklistStore(
     (state) => state.items.find((item) => item.id === id)?.isChecked ?? false,

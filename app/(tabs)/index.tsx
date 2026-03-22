@@ -2,7 +2,7 @@ import ContentContainer from "@/components/ContentContainer";
 import CustomScrollView from "@/components/CustomScrollView";
 import { n } from "@/utils/scaling";
 import { ChecklistItem } from "@/components/ChecklistItem";
-import { useChecklistStore } from "@/contexts/Checklist";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 
 export default function Tab() {
   const { items } = useChecklistStore();
