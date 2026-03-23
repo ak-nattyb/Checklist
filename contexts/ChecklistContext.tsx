@@ -32,6 +32,12 @@ export const useChecklistStore = create<ChecklistStore>()(
             item.id === id ? { ...item, isChecked: !item.isChecked } : item,
           ),
         })),
+      renameItem: (id: string, newText: string) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === id ? { ...item, text: newText } : item,
+          ),
+        })),
       deleteItem: (id) =>
         set((state) => ({
           items: state.items.filter((item) => item.id !== id),
