@@ -34,11 +34,11 @@ export function ChecklistItem({ text, id }: ButtonProps) {
             ? MdStyles.button //75%
             : SmStyles.button //50%
       }
-      onPress={flipChecked}
       onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
       <MaterialIcons
         name={isChecked ? "check-box" : "check-box-outline-blank"}
+        onPress={flipChecked}
         size={
           displayMode === "Lg"
             ? n(36) //100%
@@ -56,6 +56,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
               ? MdStyles.buttonText
               : SmStyles.buttonText
         }
+        onPress={() => router.push(`/edit-title?id=${id}`)}
       >
         {text}
       </StyledText>
