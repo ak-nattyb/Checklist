@@ -6,9 +6,9 @@ import { SelectorButton } from "@/components/SelectorButton";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 
 const DISPLAY_MODE_LABELS: Record<string, string> = {
-  standard: "Standard",
-  compact: "Compact",
-  comfortable: "Comfortable",
+  Lg: "Large",
+  Md: "Medium",
+  Sm: "Small",
 };
 
 export default function SettingsScreen() {

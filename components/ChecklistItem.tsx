@@ -28,9 +28,9 @@ export function ChecklistItem({ text, id }: ButtonProps) {
   return (
     <HapticPressable
       style={
-        displayMode === "comfortable"
+        displayMode === "Lg"
           ? comfortableStyles.button //100%
-          : displayMode === "standard"
+          : displayMode === "Md"
             ? standardStyles.button //75%
             : compactStyles.button //50%
       }
@@ -40,9 +40,9 @@ export function ChecklistItem({ text, id }: ButtonProps) {
       <MaterialIcons
         name={isChecked ? "check-box" : "check-box-outline-blank"}
         size={
-          displayMode === "comfortable"
+          displayMode === "Lg"
             ? n(35) //100%
-            : displayMode === "standard"
+            : displayMode === "Md"
               ? n(27) //75%
               : n(18) //50%
         }
@@ -50,9 +50,9 @@ export function ChecklistItem({ text, id }: ButtonProps) {
       />
       <StyledText
         style={
-          displayMode === "comfortable"
+          displayMode === "Lg"
             ? comfortableStyles.buttonText
-            : displayMode === "standard"
+            : displayMode === "Md"
               ? standardStyles.buttonText
               : compactStyles.buttonText
         }

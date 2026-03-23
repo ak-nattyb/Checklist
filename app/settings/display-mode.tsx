@@ -3,9 +3,9 @@ import { OptionsSelector } from "@/components/OptionsSelector";
 import { useDisplayMode, DisplayMode } from "@/contexts/DisplayModeContext";
 
 const OPTIONS = [
-  { label: "Standard", value: "standard" },
-  { label: "Compact", value: "compact" },
-  { label: "Comfortable", value: "comfortable" },
+  { label: "Large", value: "Lg" },
+  { label: "Medium", value: "Md" },
+  { label: "Small", value: "Sm" },
 ];
 
 export default function DisplayModeScreen() {
@@ -15,7 +15,7 @@ export default function DisplayModeScreen() {
     <OptionsSelector
       title="Display Mode"
       options={OPTIONS}
-      selectedValue={displayMode}
+      selectedValue={displayMode.toString()}
       onSelect={(value) => setDisplayMode(value as DisplayMode)}
     />
   );
