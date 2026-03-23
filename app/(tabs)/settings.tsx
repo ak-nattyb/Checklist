@@ -4,6 +4,7 @@ import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { SelectorButton } from "@/components/SelectorButton";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { n } from "@/utils/scaling";
 
 const DISPLAY_MODE_LABELS: Record<string, string> = {
   Lg: "Large",
@@ -16,7 +17,7 @@ export default function SettingsScreen() {
   const { displayMode } = useDisplayMode();
 
   return (
-    <ContentContainer headerTitle="Settings">
+    <ContentContainer headerTitle="Settings" style={{ gap: n(20) }}>
       <SelectorButton
         label="Display Mode"
         value={DISPLAY_MODE_LABELS[displayMode]}
