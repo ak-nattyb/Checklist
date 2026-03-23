@@ -24,7 +24,7 @@ export default function SettingsScreen() {
       />
       <ToggleSwitch
         value={invertColors}
-        label="Invert Colours"
+        label="Invert Colors"
         onValueChange={setInvertColors}
       />
     </ContentContainer>

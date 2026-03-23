@@ -12,7 +12,6 @@ import { useDisplayMode } from "@/contexts/DisplayModeContext";
 interface ButtonProps {
   id: string;
   text: string;
-  checked?: boolean;
 }
 
 export function ChecklistItem({ text, id }: ButtonProps) {
