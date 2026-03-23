@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { StyledText } from "./StyledText";
 import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
@@ -26,7 +26,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
   }
 
   return (
-    <HapticPressable
+    <View
       style={
         displayMode === "Lg"
           ? LgStyles.button //100%
@@ -34,36 +34,42 @@ export function ChecklistItem({ text, id }: ButtonProps) {
             ? MdStyles.button //75%
             : SmStyles.button //50%
       }
-      onPress={() => {}}
-      onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
-      <MaterialIcons
-        name={isChecked ? "check-box" : "check-box-outline-blank"}
+      <HapticPressable
         onPress={flipChecked}
         onLongPress={() => router.push(`/confirm?id=${id}`)}
-        size={
-          displayMode === "Lg"
-            ? n(36) //100%
-            : displayMode === "Md"
-              ? n(28) //80%
-              : n(21) //60%
-        }
-        color={invertColors ? "black" : "white"}
-      />
-      <StyledText
-        style={
-          displayMode === "Lg"
-            ? LgStyles.buttonText
-            : displayMode === "Md"
-              ? MdStyles.buttonText
-              : SmStyles.buttonText
-        }
+      >
+        <MaterialIcons
+          name={isChecked ? "check-box" : "check-box-outline-blank"}
+          size={
+            displayMode === "Lg"
+              ? n(36) //100%
+              : displayMode === "Md"
+                ? n(28) //80%
+                : n(21) //60%
+          }
+          color={invertColors ? "black" : "white"}
+        />
+      </HapticPressable>
+      <HapticPressable
         onPress={() => router.push(`/edit-title?id=${id}`)}
         onLongPress={() => router.push(`/confirm?id=${id}`)}
       >
-        {text}
-      </StyledText>
-    </HapticPressable>
+        <StyledText
+          style={
+            displayMode === "Lg"
+              ? LgStyles.buttonText
+              : displayMode === "Md"
+                ? MdStyles.buttonText
+                : SmStyles.buttonText
+          }
+          onPress={() => router.push(`/edit-title?id=${id}`)}
+          onLongPress={() => router.push(`/confirm?id=${id}`)}
+        >
+          {text}
+        </StyledText>
+      </HapticPressable>
+    </View>
   );
 }
 
