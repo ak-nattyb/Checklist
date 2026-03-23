@@ -29,10 +29,10 @@ export function ChecklistItem({ text, id }: ButtonProps) {
     <HapticPressable
       style={
         displayMode === "Lg"
-          ? comfortableStyles.button //100%
+          ? LgStyles.button //100%
           : displayMode === "Md"
-            ? standardStyles.button //75%
-            : compactStyles.button //50%
+            ? MdStyles.button //75%
+            : SmStyles.button //50%
       }
       onPress={flipChecked}
       onLongPress={() => router.push(`/confirm?id=${id}`)}
@@ -41,22 +41,21 @@ export function ChecklistItem({ text, id }: ButtonProps) {
         name={isChecked ? "check-box" : "check-box-outline-blank"}
         size={
           displayMode === "Lg"
-            ? n(35) //100%
+            ? n(36) //100%
             : displayMode === "Md"
-              ? n(27) //75%
-              : n(18) //50%
+              ? n(28) //80%
+              : n(21) //60%
         }
         color={invertColors ? "black" : "white"}
       />
       <StyledText
         style={
           displayMode === "Lg"
-            ? comfortableStyles.buttonText
+            ? LgStyles.buttonText
             : displayMode === "Md"
-              ? standardStyles.buttonText
-              : compactStyles.buttonText
+              ? MdStyles.buttonText
+              : SmStyles.buttonText
         }
-        numberOfLines={1}
       >
         {text}
       </StyledText>
@@ -64,38 +63,41 @@ export function ChecklistItem({ text, id }: ButtonProps) {
   );
 }
 
-const comfortableStyles = StyleSheet.create({
+const LgStyles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 10,
   },
   buttonText: {
     fontSize: n(30),
+    flexShrink: 1,
   },
 });
 
-const standardStyles = StyleSheet.create({
+const MdStyles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 8,
   },
   buttonText: {
-    fontSize: n(23),
+    fontSize: n(24),
+    flexShrink: 1,
   },
 });
 
-const compactStyles = StyleSheet.create({
+const SmStyles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 5,
+    alignItems: "flex-start",
+    gap: 6,
   },
   buttonText: {
-    fontSize: n(15),
+    fontSize: n(18),
+    flexShrink: 1,
   },
 });

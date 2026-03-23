@@ -23,10 +23,10 @@ export default function Tab() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={
           displayMode === "Lg"
-            ? { gap: n(28) } //100%
+            ? { gap: n(25) } //100%
             : displayMode === "Md"
-              ? { gap: n(21) } //75%
-              : { gap: n(14) } //50%
+              ? { gap: n(20) } //80%
+              : { gap: n(15) } //60%
         }
       />
     </ContentContainer>
