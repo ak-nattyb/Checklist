@@ -56,6 +56,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
               ? MdStyles.buttonText
               : SmStyles.buttonText
         }
+        onPress={() => router.push(`/edit-title?id=${id}`)}
       >
         {text}
       </StyledText>
