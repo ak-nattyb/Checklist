@@ -34,6 +34,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
             ? MdStyles.button //75%
             : SmStyles.button //50%
       }
+      onPress={() => {}}
       onLongPress={() => router.push(`/confirm?id=${id}`)}
     >
       <MaterialIcons
