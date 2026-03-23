@@ -29,10 +29,10 @@ export function ChecklistItem({ text, id }: ButtonProps) {
     <View
       style={
         displayMode === "Lg"
-          ? LgStyles.button //100%
+          ? LgStyles.primaryContainer //100%
           : displayMode === "Md"
-            ? MdStyles.button //75%
-            : SmStyles.button //50%
+            ? MdStyles.primaryContainer //75%
+            : SmStyles.primaryContainer //50%
       }
     >
       <HapticPressable
@@ -54,14 +54,21 @@ export function ChecklistItem({ text, id }: ButtonProps) {
       <HapticPressable
         onPress={() => router.push(`/edit-title?id=${id}`)}
         onLongPress={() => router.push(`/confirm?id=${id}`)}
+        style={
+          displayMode === "Lg"
+            ? LgStyles.textContainer
+            : displayMode === "Md"
+              ? MdStyles.textContainer
+              : SmStyles.textContainer
+        }
       >
         <StyledText
           style={
             displayMode === "Lg"
-              ? LgStyles.buttonText
+              ? LgStyles.text
               : displayMode === "Md"
-                ? MdStyles.buttonText
-                : SmStyles.buttonText
+                ? MdStyles.text
+                : SmStyles.text
           }
           onPress={() => router.push(`/edit-title?id=${id}`)}
           onLongPress={() => router.push(`/confirm?id=${id}`)}
@@ -74,40 +81,46 @@ export function ChecklistItem({ text, id }: ButtonProps) {
 }
 
 const LgStyles = StyleSheet.create({
-  button: {
+  primaryContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     gap: 10,
   },
-  buttonText: {
-    fontSize: n(30),
+  textContainer: {
     flexShrink: 1,
+  },
+  text: {
+    fontSize: n(30),
   },
 });
 
 const MdStyles = StyleSheet.create({
-  button: {
+  primaryContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     gap: 8,
   },
-  buttonText: {
-    fontSize: n(24),
+  textContainer: {
     flexShrink: 1,
+  },
+  text: {
+    fontSize: n(24),
   },
 });
 
 const SmStyles = StyleSheet.create({
-  button: {
+  primaryContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     gap: 6,
   },
-  buttonText: {
-    fontSize: n(18),
+  textContainer: {
     flexShrink: 1,
+  },
+  text: {
+    fontSize: n(18),
   },
 });
