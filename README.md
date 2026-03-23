@@ -13,10 +13,12 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 
 ## Features
 
-- Add items to the list
-- Toggle the checkbox for each item
+- Add new items to the list
+- Press on item title to rename it
+- Press on checkbox to toggle it between checked and unchecked
 - Long press on an item to delete
 - Checklist stores and persists between app loads/unloads and phone restarts
+- Change spacing between Small, Medium, and Large (defaults to Medium)
 
 ## Acknowledgements
 
