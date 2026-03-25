@@ -14,7 +14,7 @@ interface ButtonProps {
   location: string;
 }
 
-export function FolderItem({ text, id, location }: ButtonProps) {
+export function ChecklistFolder({ text, id, location }: ButtonProps) {
   const { invertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
 

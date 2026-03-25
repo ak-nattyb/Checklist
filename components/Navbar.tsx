@@ -37,12 +37,12 @@ export function Navbar({
           key={tab.screenName}
           onPress={() =>
             tab.screenName === "create-new"
-              ? navigation.navigate(tab.screenName + '?itemType="item"')
+              ? navigation.navigate(tab.screenName, { itemType: "item" })
               : navigation.navigate(tab.screenName)
           }
           onLongPress={() =>
             tab.screenName === "create-new"
-              ? navigation.navigate(tab.screenName + '?itemType="item"')
+              ? navigation.navigate(tab.screenName, { itemType: "folder" })
               : []
           }
         >

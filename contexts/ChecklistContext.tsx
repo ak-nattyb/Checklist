@@ -29,6 +29,7 @@ interface ChecklistStore {
   deleteEntry: (id: string) => void;
   //moveEntry: (id: string, newLocation: string) => void;
   getEntry: (id: string) => ChecklistEntry | undefined;
+  getEntryName: (id: string) => string;
 
   //Items
   addItem: (text: string, location?: string) => void;
@@ -78,6 +79,8 @@ export const useChecklistStore = create<ChecklistStore>()(
         })),*/
 
       getEntry: (id) => get().entries.find((e) => e.id === id),
+
+      getEntryName: (id) => get().entries.find((e) => e.id === id)?.text ?? "",
 
       // Item actions
       addItem: (text, location = "") =>

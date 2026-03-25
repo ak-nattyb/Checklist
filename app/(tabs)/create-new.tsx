@@ -8,7 +8,7 @@ import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
-  const { itemType } = useLocalSearchParams<{ id: string }>();
+  const { itemType } = useLocalSearchParams<{ itemType: string }>();
 
   useFocusEffect(
     useCallback(() => {
@@ -18,13 +18,21 @@ export default function CreateNew() {
 
   const addItem = () => {
     if (query.length === 0) return;
-    useChecklistStore.getState().addItem(query);
+
+    //check between a folder or an item
+    if (itemType === "folder") {
+      useChecklistStore.getState().addFolder(query);
+    } else if (itemType === "item") {
+      useChecklistStore.getState().addItem(query);
+    }
     router.back();
   };
 
   return (
     <ContentContainer
-      headerTitle="Create New Item"
+      headerTitle={
+        itemType === "item" ? "Create New Item" : "Create New Folder"
+      }
       rightIcon="save"
       showRightIcon={query.length > 0}
       onRightIconPress={addItem}
@@ -33,7 +41,7 @@ export default function CreateNew() {
       <SearchInput
         value={query}
         onChangeText={setQuery}
-        placeholder="Add New Item"
+        placeholder={itemType === "item" ? "Item Name" : "Folder Name"}
         onSubmit={addItem}
         autoFocus
       />

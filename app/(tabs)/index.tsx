@@ -2,6 +2,7 @@ import ContentContainer from "@/components/ContentContainer";
 import CustomScrollView from "@/components/CustomScrollView";
 import { n } from "@/utils/scaling";
 import { ChecklistItem } from "@/components/ChecklistItem";
+import { ChecklistFolder } from "@/components/ChecklistFolder";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 
@@ -17,13 +18,21 @@ export default function Tab() {
     >
       <CustomScrollView
         data={entries}
-        renderItem={({ item }) => (
-          <ChecklistItem
-            id={item.id}
-            text={item.text}
-            location={item.location}
-          />
-        )}
+        renderItem={({ item }) =>
+          item.kind === "item" ? (
+            <ChecklistItem
+              id={item.id}
+              text={item.text}
+              location={item.location}
+            />
+          ) : (
+            <ChecklistFolder
+              id={item.id}
+              text={item.text}
+              location={item.location}
+            />
+          )
+        }
         keyExtractor={(item) => item.id}
         contentContainerStyle={
           displayMode === "Lg"
