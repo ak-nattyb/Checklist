@@ -20,10 +20,7 @@ export default function Tab() {
   return (
     <ContentContainer
       headerTitle={headerTitle}
-      hideBackButton
-      rightIcon={"home"}
-      showRightIcon={activeFolderId !== ""}
-      onRightIconPress={() => setActiveFolderId("")}
+      hideBackButton={activeFolderId === ""}
       style={{ paddingHorizontal: n(20) }}
     >
       <CustomScrollView

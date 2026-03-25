@@ -20,7 +20,7 @@ export function ChecklistFolder({ text, id, location, onPress }: ButtonProps) {
   const { displayMode } = useDisplayMode();
 
   return (
-    <HapticPressable
+    <View
       style={
         displayMode === "Lg"
           ? LgStyles.primaryContainer //100%
@@ -28,32 +28,49 @@ export function ChecklistFolder({ text, id, location, onPress }: ButtonProps) {
             ? MdStyles.primaryContainer //75%
             : SmStyles.primaryContainer //50%
       }
-      onPress={onPress}
-      onLongPress={() => router.push(`/delete-item?id=${id}`)}
     >
-      <MaterialIcons
-        name={"folder"}
-        size={
-          displayMode === "Lg"
-            ? n(36) //100%
-            : displayMode === "Md"
-              ? n(28) //80%
-              : n(21) //60%
-        }
-        color={invertColors ? "black" : "white"}
-      />
-      <StyledText
+      <HapticPressable
+        onPress={onPress}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
+      >
+        <MaterialIcons
+          name={"folder"}
+          size={
+            displayMode === "Lg"
+              ? n(36) //100%
+              : displayMode === "Md"
+                ? n(28) //80%
+                : n(21) //60%
+          }
+          color={invertColors ? "black" : "white"}
+        />
+      </HapticPressable>
+      <HapticPressable
+        onPress={() => router.push(`/edit-title?id=${id}`)}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
         style={
           displayMode === "Lg"
-            ? LgStyles.text
+            ? LgStyles.textContainer
             : displayMode === "Md"
-              ? MdStyles.text
-              : SmStyles.text
+              ? MdStyles.textContainer
+              : SmStyles.textContainer
         }
       >
-        {text}
-      </StyledText>
-    </HapticPressable>
+        <StyledText
+          style={
+            displayMode === "Lg"
+              ? LgStyles.text
+              : displayMode === "Md"
+                ? MdStyles.text
+                : SmStyles.text
+          }
+          onPress={() => router.push(`/edit-title?id=${id}`)}
+          onLongPress={() => router.push(`/delete-item?id=${id}`)}
+        >
+          {text}
+        </StyledText>
+      </HapticPressable>
+    </View>
   );
 }
 
