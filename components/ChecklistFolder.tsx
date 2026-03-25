@@ -5,7 +5,6 @@ import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 
@@ -13,21 +12,12 @@ interface ButtonProps {
   id: string;
   text: string;
   location: string;
+  onPress: () => void;
 }
 
-export function ChecklistItem({ text, id }: ButtonProps) {
+export function ChecklistFolder({ text, id, location, onPress }: ButtonProps) {
   const { invertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
-
-  //written longer to be more verbose/readable
-  const isChecked = useChecklistStore((state) => {
-    const entry = state.entries.find((e) => e.id === id);
-    return entry?.kind === "item" ? entry.isChecked : false;
-  });
-
-  function flipChecked() {
-    useChecklistStore.getState().toggleItem(id);
-  }
 
   return (
     <View
@@ -40,11 +30,11 @@ export function ChecklistItem({ text, id }: ButtonProps) {
       }
     >
       <HapticPressable
-        onPress={flipChecked}
+        onPress={onPress}
         onLongPress={() => router.push(`/delete-item?id=${id}`)}
       >
         <MaterialIcons
-          name={isChecked ? "check-box" : "check-box-outline-blank"}
+          name={"folder"}
           size={
             displayMode === "Lg"
               ? n(36) //100%
