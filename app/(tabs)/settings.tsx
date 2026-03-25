@@ -12,6 +12,11 @@ const DISPLAY_MODE_LABELS: Record<string, string> = {
   Sm: "Small",
 };
 
+const JUSTIFY_TEXT_LABELS: Record<string, string> = {
+  Left: "Left",
+  Right: "Right",
+};
+
 export default function SettingsScreen() {
   const { invertColors, setInvertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
@@ -21,6 +26,11 @@ export default function SettingsScreen() {
       <SelectorButton
         label="Display Mode"
         value={DISPLAY_MODE_LABELS[displayMode]}
+        href="/settings/display-mode"
+      />
+      <SelectorButton
+        label="Justify List"
+        value={JUSTIFY_TEXT_LABELS[displayMode]}
         href="/settings/display-mode"
       />
       <ToggleSwitch
