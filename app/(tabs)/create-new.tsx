@@ -8,7 +8,10 @@ import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
-  const { itemType } = useLocalSearchParams<{ itemType: string }>();
+  const { itemType, location } = useLocalSearchParams<{
+    itemType: string;
+    location: string;
+  }>();
 
   useFocusEffect(
     useCallback(() => {
@@ -21,9 +24,9 @@ export default function CreateNew() {
 
     //check between a folder or an item
     if (itemType === "folder") {
-      useChecklistStore.getState().addFolder(query);
+      useChecklistStore.getState().addFolder(query, location);
     } else if (itemType === "item") {
-      useChecklistStore.getState().addItem(query);
+      useChecklistStore.getState().addItem(query, location);
     }
     router.back();
   };

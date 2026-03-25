@@ -5,6 +5,7 @@ import { HapticPressable } from "./HapticPressable";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 
 export interface TabConfigItem {
   name: string;
@@ -37,12 +38,30 @@ export function Navbar({
           key={tab.screenName}
           onPress={() =>
             tab.screenName === "create-new"
-              ? navigation.navigate(tab.screenName, { itemType: "item" })
+              ? navigation.navigate(tab.screenName, {
+                  itemType: "item",
+                  location: useChecklistStore.getState().activeFolderId
+                    ? useChecklistStore
+                        .getState()
+                        .getEntryName(
+                          useChecklistStore.getState().activeFolderId,
+                        )
+                    : "",
+                })
               : navigation.navigate(tab.screenName)
           }
           onLongPress={() =>
             tab.screenName === "create-new"
-              ? navigation.navigate(tab.screenName, { itemType: "folder" })
+              ? navigation.navigate(tab.screenName, {
+                  itemType: "folder",
+                  location: useChecklistStore.getState().activeFolderId
+                    ? useChecklistStore
+                        .getState()
+                        .getEntryName(
+                          useChecklistStore.getState().activeFolderId,
+                        )
+                    : "",
+                })
               : []
           }
         >

@@ -7,17 +7,27 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 
 export default function Tab() {
-  const { entries } = useChecklistStore();
+  const { entries, getEntryName, activeFolderId, setActiveFolderId } =
+    useChecklistStore();
   const { displayMode } = useDisplayMode();
+
+  const headerTitle =
+    activeFolderId === "" ? "Checklist" : getEntryName(activeFolderId);
+  const visibleEntries = activeFolderId
+    ? entries.filter((e) => e.location === getEntryName(activeFolderId))
+    : entries.filter((e) => e.location === "");
 
   return (
     <ContentContainer
-      headerTitle="Checklist"
+      headerTitle={headerTitle}
       hideBackButton
+      rightIcon={"home"}
+      showRightIcon={activeFolderId !== ""}
+      onRightIconPress={() => setActiveFolderId("")}
       style={{ paddingHorizontal: n(20) }}
     >
       <CustomScrollView
-        data={entries}
+        data={visibleEntries}
         renderItem={({ item }) =>
           item.kind === "item" ? (
             <ChecklistItem
@@ -30,6 +40,7 @@ export default function Tab() {
               id={item.id}
               text={item.text}
               location={item.location}
+              onPress={() => setActiveFolderId(item.id)}
             />
           )
         }

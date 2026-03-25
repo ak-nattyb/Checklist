@@ -27,7 +27,7 @@ interface ChecklistStore {
   //shared
   renameEntry: (id: string, newText: string) => void;
   deleteEntry: (id: string) => void;
-  //moveEntry: (id: string, newLocation: string) => void;
+  moveEntry: (id: string, newLocation: string) => void;
   getEntry: (id: string) => ChecklistEntry | undefined;
   getEntryName: (id: string) => string;
 
@@ -37,6 +37,10 @@ interface ChecklistStore {
 
   //Folders
   addFolder: (text: string, location?: string) => void;
+
+  //navigation
+  activeFolderId: string;
+  setActiveFolderId: (id: string) => void;
 }
 
 const makeId = () => Date.now().toString();
@@ -71,12 +75,12 @@ export const useChecklistStore = create<ChecklistStore>()(
           return { entries: state.entries.filter((e) => e.id !== id) };
         }),
 
-      /*moveEntry: (id, newLocation) =>
+      moveEntry: (id, newLocation) =>
         set((state) => ({
           entries: state.entries.map((e) =>
             e.id === id ? { ...e, location: newLocation } : e,
           ),
-        })),*/
+        })),
 
       getEntry: (id) => get().entries.find((e) => e.id === id),
 
@@ -87,7 +91,17 @@ export const useChecklistStore = create<ChecklistStore>()(
         set((state) => ({
           entries: [
             ...state.entries,
-            { id: makeId(), kind: "item", text, isChecked: false, location },
+            {
+              id: makeId(),
+              kind: "item",
+              text,
+              isChecked: false,
+              location:
+                location ??
+                (get().activeFolderId
+                  ? get().getEntryName(get().activeFolderId)
+                  : ""),
+            },
           ],
         })),
 
@@ -105,9 +119,22 @@ export const useChecklistStore = create<ChecklistStore>()(
         set((state) => ({
           entries: [
             ...state.entries,
-            { id: makeId(), kind: "folder", text, location },
+            {
+              id: makeId(),
+              kind: "folder",
+              text,
+              location:
+                location ??
+                (get().activeFolderId
+                  ? get().getEntryName(get().activeFolderId)
+                  : ""),
+            },
           ],
         })),
+
+      //navigation
+      activeFolderId: "",
+      setActiveFolderId: (id) => set({ activeFolderId: id }),
     }),
     {
       name: "checklist-storage",
