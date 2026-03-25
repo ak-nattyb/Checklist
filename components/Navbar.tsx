@@ -35,7 +35,16 @@ export function Navbar({
       {tabsConfig?.map((tab) => (
         <HapticPressable
           key={tab.screenName}
-          onPress={() => navigation.navigate(tab.screenName)}
+          onPress={() =>
+            tab.screenName === "create-new"
+              ? navigation.navigate(tab.screenName + '?itemType="item"')
+              : navigation.navigate(tab.screenName)
+          }
+          onLongPress={() =>
+            tab.screenName === "create-new"
+              ? navigation.navigate(tab.screenName + '?itemType="item"')
+              : []
+          }
         >
           <MaterialIcons
             name={tab.iconName}

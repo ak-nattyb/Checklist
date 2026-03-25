@@ -10,7 +10,7 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 
 export default function DeleteItemScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const deleteItem = useChecklistStore((state) => state.deleteItem);
+  const deleteItem = useChecklistStore((state) => state.deleteEntry);
   const router = useRouter();
   const { invertColors } = useInvertColors();
 

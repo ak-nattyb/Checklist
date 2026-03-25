@@ -28,7 +28,7 @@ export function FolderItem({ text, id, location }: ButtonProps) {
             : SmStyles.primaryContainer //50%
       }
     >
-      <HapticPressable onLongPress={() => router.push(`/confirm?id=${id}`)}>
+      <HapticPressable onLongPress={() => router.push(`/delete-item?id=${id}`)}>
         <MaterialIcons
           name={"folder"}
           size={
@@ -43,7 +43,7 @@ export function FolderItem({ text, id, location }: ButtonProps) {
       </HapticPressable>
       <HapticPressable
         onPress={() => router.push(`/edit-title?id=${id}`)}
-        onLongPress={() => router.push(`/confirm?id=${id}`)}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
         style={
           displayMode === "Lg"
             ? LgStyles.textContainer
@@ -61,7 +61,7 @@ export function FolderItem({ text, id, location }: ButtonProps) {
                 : SmStyles.text
           }
           onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/confirm?id=${id}`)}
+          onLongPress={() => router.push(`/delete-item?id=${id}`)}
         >
           {text}
         </StyledText>

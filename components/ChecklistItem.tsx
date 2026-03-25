@@ -12,17 +12,21 @@ import { useDisplayMode } from "@/contexts/DisplayModeContext";
 interface ButtonProps {
   id: string;
   text: string;
+  location: string;
 }
 
 export function ChecklistItem({ text, id }: ButtonProps) {
   const { invertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
-  const isChecked = useChecklistStore(
-    (state) => state.items.find((item) => item.id === id)?.isChecked ?? false,
-  );
+
+  //written longer to be more verbose/readable
+  const isChecked = useChecklistStore((state) => {
+    const entry = state.entries.find((e) => e.id === id);
+    return entry?.kind === "item" ? entry.isChecked : false;
+  });
 
   function flipChecked() {
-    useChecklistStore.getState().modifyItem(id);
+    useChecklistStore.getState().toggleItem(id);
   }
 
   return (
@@ -37,7 +41,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
     >
       <HapticPressable
         onPress={flipChecked}
-        onLongPress={() => router.push(`/confirm?id=${id}`)}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
       >
         <MaterialIcons
           name={isChecked ? "check-box" : "check-box-outline-blank"}
@@ -53,7 +57,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
       </HapticPressable>
       <HapticPressable
         onPress={() => router.push(`/edit-title?id=${id}`)}
-        onLongPress={() => router.push(`/confirm?id=${id}`)}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
         style={
           displayMode === "Lg"
             ? LgStyles.textContainer
@@ -71,7 +75,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
                 : SmStyles.text
           }
           onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/confirm?id=${id}`)}
+          onLongPress={() => router.push(`/delete-item?id=${id}`)}
         >
           {text}
         </StyledText>

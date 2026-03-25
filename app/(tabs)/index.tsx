@@ -6,7 +6,7 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 
 export default function Tab() {
-  const { items } = useChecklistStore();
+  const { entries } = useChecklistStore();
   const { displayMode } = useDisplayMode();
 
   return (
@@ -16,9 +16,13 @@ export default function Tab() {
       style={{ paddingHorizontal: n(20) }}
     >
       <CustomScrollView
-        data={items}
+        data={entries}
         renderItem={({ item }) => (
-          <ChecklistItem id={item.id} text={item.text} />
+          <ChecklistItem
+            id={item.id}
+            text={item.text}
+            location={item.location}
+          />
         )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={

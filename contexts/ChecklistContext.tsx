@@ -2,52 +2,109 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface ChecklistItem {
+interface BaseEntry {
   id: string;
   text: string;
+  location: string;
+}
+
+export interface ChecklistItem extends BaseEntry {
+  kind: "item";
   isChecked: boolean;
 }
 
-interface ChecklistStore {
-  items: ChecklistItem[];
-  addItem: (text: string) => void;
-  modifyItem: (id: string) => void;
-  renameItem: (id: string, newText: string) => void;
-  deleteItem: (id: string) => void;
-  returnItemName: (id: string) => string;
+export interface ChecklistFolder extends BaseEntry {
+  kind: "folder";
 }
+
+export type ChecklistEntry = ChecklistItem | ChecklistFolder;
+
+// --- Store ---
+
+interface ChecklistStore {
+  entries: ChecklistEntry[];
+
+  //shared
+  renameEntry: (id: string, newText: string) => void;
+  deleteEntry: (id: string) => void;
+  //moveEntry: (id: string, newLocation: string) => void;
+  getEntry: (id: string) => ChecklistEntry | undefined;
+
+  //Items
+  addItem: (text: string, location?: string) => void;
+  toggleItem: (id: string) => void;
+
+  //Folders
+  addFolder: (text: string, location?: string) => void;
+}
+
+const makeId = () => Date.now().toString();
 
 export const useChecklistStore = create<ChecklistStore>()(
   persist(
     (set, get) => ({
-      items: [],
-      addItem: (text) =>
+      entries: [],
+
+      // Shared actions
+      renameEntry: (id, newText) =>
         set((state) => ({
-          items: [
-            ...state.items,
-            { id: Date.now().toString(), text, isChecked: false },
+          entries: state.entries.map((e) =>
+            e.id === id ? { ...e, text: newText } : e,
+          ),
+        })),
+
+      deleteEntry: (id) =>
+        set((state) => {
+          // Find the entry being deleted
+          const target = state.entries.find((e) => e.id === id);
+
+          // If it's a folder, also delete all direct children
+          if (target?.kind === "folder") {
+            return {
+              entries: state.entries.filter(
+                (e) => e.id !== id && e.location !== target.text,
+              ),
+            };
+          }
+
+          return { entries: state.entries.filter((e) => e.id !== id) };
+        }),
+
+      /*moveEntry: (id, newLocation) =>
+        set((state) => ({
+          entries: state.entries.map((e) =>
+            e.id === id ? { ...e, location: newLocation } : e,
+          ),
+        })),*/
+
+      getEntry: (id) => get().entries.find((e) => e.id === id),
+
+      // Item actions
+      addItem: (text, location = "") =>
+        set((state) => ({
+          entries: [
+            ...state.entries,
+            { id: makeId(), kind: "item", text, isChecked: false, location },
           ],
         })),
-      modifyItem: (id) =>
+
+      toggleItem: (id) =>
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, isChecked: !item.isChecked } : item,
+          entries: state.entries.map((e) =>
+            e.id === id && e.kind === "item"
+              ? { ...e, isChecked: !e.isChecked }
+              : e,
           ),
         })),
-      renameItem: (id, newText) =>
+
+      // Folder actions
+      addFolder: (text, location = "") =>
         set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, text: newText } : item,
-          ),
+          entries: [
+            ...state.entries,
+            { id: makeId(), kind: "folder", text, location },
+          ],
         })),
-      deleteItem: (id) =>
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        })),
-      returnItemName: (id) => {
-        const item = get().items.find((item) => item.id === id);
-        return item?.text ?? "";
-      },
     }),
     {
       name: "checklist-storage",

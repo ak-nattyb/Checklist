@@ -31,7 +31,7 @@ function RootNavigation() {
       }}
     >
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="confirm" />
+      <Stack.Screen name="delete-item" />
     </Stack>
   );
 }

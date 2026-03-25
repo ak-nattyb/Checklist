@@ -4,10 +4,11 @@ import ContentContainer from "@/components/ContentContainer";
 import { SearchInput } from "@/components/SearchInput";
 import { n } from "@/utils/scaling";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
+  const { itemType } = useLocalSearchParams<{ id: string }>();
 
   useFocusEffect(
     useCallback(() => {
