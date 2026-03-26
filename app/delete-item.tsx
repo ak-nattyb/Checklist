@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import ContentContainer from "@/components/ContentContainer";
@@ -10,7 +10,12 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 
 export default function DeleteItemScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const itemName = useChecklistStore().getEntryName(id);
+
+  //have to do some tricks to preserve the item name as it's being deleted
+  const liveItemName = useChecklistStore().getEntryName(id);
+  const itemName = useRef(liveItemName).current;
+
+  //single line function here
   const deleteItem = useChecklistStore((state) => state.deleteEntry);
   const router = useRouter();
   const { invertColors } = useInvertColors();
