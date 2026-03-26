@@ -8,9 +8,10 @@ import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 
-export default function ConfirmScreen() {
+export default function DeleteItemScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const deleteItem = useChecklistStore((state) => state.deleteItem);
+  const itemName = useChecklistStore().getEntryName(id);
+  const deleteItem = useChecklistStore((state) => state.deleteEntry);
   const router = useRouter();
   const { invertColors } = useInvertColors();
 
@@ -25,9 +26,9 @@ export default function ConfirmScreen() {
   const textColor = invertColors ? "black" : "white";
 
   return (
-    <ContentContainer headerTitle={"Confirm"}>
+    <ContentContainer headerTitle={"Delete Entry"}>
       <StyledText style={styles.messageText}>
-        {"Are you sure you want to delete this?"}
+        {`Are you sure you want to delete ${itemName}?`}
       </StyledText>
 
       <View style={styles.buttonContainer}>

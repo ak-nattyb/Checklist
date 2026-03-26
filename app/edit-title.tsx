@@ -9,18 +9,18 @@ import { useLocalSearchParams, router } from "expo-router";
 export default function EditTitle() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [input, setInput] = useState(
-    useChecklistStore.getState().returnItemName(id),
+    useChecklistStore.getState().getEntryName(id),
   );
 
   const renameItem = () => {
     if (input.length === 0) return;
-    useChecklistStore.getState().renameItem(id, input);
+    useChecklistStore.getState().renameEntry(id, input);
     router.back();
   };
 
   return (
     <ContentContainer
-      headerTitle="Rename Item"
+      headerTitle="Rename Entry"
       rightIcon="save"
       showRightIcon={input.length > 0}
       onRightIconPress={renameItem}
