@@ -11,6 +11,7 @@ import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
 import * as SystemUI from "expo-system-ui";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
+import { JustifyTextProvider } from "@/contexts/JustifyTextContext";
 
 function RootNavigation() {
   const { invertColors } = useInvertColors();
@@ -32,6 +33,7 @@ function RootNavigation() {
     >
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="delete-item" />
+      <Stack.Screen name="edit-title" />
     </Stack>
   );
 }
@@ -58,9 +60,11 @@ export default function RootLayout() {
   return (
     <InvertColorsProvider>
       <DisplayModeProvider>
-        <HapticProvider>
-          <RootNavigation />
-        </HapticProvider>
+        <JustifyTextProvider>
+          <HapticProvider>
+            <RootNavigation />
+          </HapticProvider>
+        </JustifyTextProvider>
       </DisplayModeProvider>
     </InvertColorsProvider>
   );

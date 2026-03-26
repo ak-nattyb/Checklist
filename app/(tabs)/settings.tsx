@@ -5,6 +5,7 @@ import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { SelectorButton } from "@/components/SelectorButton";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { n } from "@/utils/scaling";
+import { useJustifyText } from "@/contexts/JustifyTextContext";
 
 const DISPLAY_MODE_LABELS: Record<string, string> = {
   Lg: "Large",
@@ -20,6 +21,7 @@ const JUSTIFY_TEXT_LABELS: Record<string, string> = {
 export default function SettingsScreen() {
   const { invertColors, setInvertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
+  const { justifyText } = useJustifyText();
 
   return (
     <ContentContainer headerTitle="Settings" style={{ gap: n(20) }}>
@@ -30,8 +32,8 @@ export default function SettingsScreen() {
       />
       <SelectorButton
         label="Justify List"
-        value={JUSTIFY_TEXT_LABELS[displayMode]}
-        href="/settings/display-mode"
+        value={JUSTIFY_TEXT_LABELS[justifyText]}
+        href="/settings/justify-text"
       />
       <ToggleSwitch
         value={invertColors}

@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useJustifyText } from "@/contexts/JustifyTextContext";
 
 interface ButtonProps {
   id: string;
@@ -18,6 +19,7 @@ interface ButtonProps {
 export function ChecklistFolder({ text, id, location, onPress }: ButtonProps) {
   const { invertColors } = useInvertColors();
   const { displayMode } = useDisplayMode();
+  const { justifyText } = useJustifyText();
 
   return (
     <View
@@ -29,47 +31,100 @@ export function ChecklistFolder({ text, id, location, onPress }: ButtonProps) {
             : SmStyles.primaryContainer //50%
       }
     >
-      <HapticPressable
-        onPress={onPress}
-        onLongPress={() => router.push(`/delete-item?id=${id}`)}
-      >
-        <MaterialIcons
-          name={"folder"}
-          size={
-            displayMode === "Lg"
-              ? n(36) //100%
-              : displayMode === "Md"
-                ? n(28) //80%
-                : n(21) //60%
-          }
-          color={invertColors ? "black" : "white"}
-        />
-      </HapticPressable>
-      <HapticPressable
-        onPress={() => router.push(`/edit-title?id=${id}`)}
-        onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        style={
-          displayMode === "Lg"
-            ? LgStyles.textContainer
-            : displayMode === "Md"
-              ? MdStyles.textContainer
-              : SmStyles.textContainer
-        }
-      >
-        <StyledText
-          style={
-            displayMode === "Lg"
-              ? LgStyles.text
-              : displayMode === "Md"
-                ? MdStyles.text
-                : SmStyles.text
-          }
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        >
-          {text}
-        </StyledText>
-      </HapticPressable>
+      {
+        //control folder and name order
+        justifyText === "Left" ? (
+          <HapticPressable
+            onPress={onPress}
+            onLongPress={() => router.push(`/delete-item?id=${id}`)}
+          >
+            <MaterialIcons
+              name={"folder"}
+              size={
+                displayMode === "Lg"
+                  ? n(36) //100%
+                  : displayMode === "Md"
+                    ? n(28) //80%
+                    : n(21) //60%
+              }
+              color={invertColors ? "black" : "white"}
+            />
+          </HapticPressable>
+        ) : (
+          <HapticPressable
+            onPress={() => router.push(`/edit-title?id=${id}`)}
+            onLongPress={() => router.push(`/delete-item?id=${id}`)}
+            style={
+              displayMode === "Lg"
+                ? LgStyles.textContainer
+                : displayMode === "Md"
+                  ? MdStyles.textContainer
+                  : SmStyles.textContainer
+            }
+          >
+            <StyledText
+              style={
+                displayMode === "Lg"
+                  ? LgStyles.text
+                  : displayMode === "Md"
+                    ? MdStyles.text
+                    : SmStyles.text
+              }
+              onPress={() => router.push(`/edit-title?id=${id}`)}
+              onLongPress={() => router.push(`/delete-item?id=${id}`)}
+            >
+              {text}
+            </StyledText>
+          </HapticPressable>
+        )
+      }
+      {
+        //control folder and name order (opposite)
+        justifyText === "Right" ? (
+          <HapticPressable
+            onPress={onPress}
+            onLongPress={() => router.push(`/delete-item?id=${id}`)}
+          >
+            <MaterialIcons
+              name={"folder"}
+              size={
+                displayMode === "Lg"
+                  ? n(36) //100%
+                  : displayMode === "Md"
+                    ? n(28) //80%
+                    : n(21) //60%
+              }
+              color={invertColors ? "black" : "white"}
+            />
+          </HapticPressable>
+        ) : (
+          <HapticPressable
+            onPress={() => router.push(`/edit-title?id=${id}`)}
+            onLongPress={() => router.push(`/delete-item?id=${id}`)}
+            style={
+              displayMode === "Lg"
+                ? LgStyles.textContainer
+                : displayMode === "Md"
+                  ? MdStyles.textContainer
+                  : SmStyles.textContainer
+            }
+          >
+            <StyledText
+              style={
+                displayMode === "Lg"
+                  ? LgStyles.text
+                  : displayMode === "Md"
+                    ? MdStyles.text
+                    : SmStyles.text
+              }
+              onPress={() => router.push(`/edit-title?id=${id}`)}
+              onLongPress={() => router.push(`/delete-item?id=${id}`)}
+            >
+              {text}
+            </StyledText>
+          </HapticPressable>
+        )
+      }
     </View>
   );
 }

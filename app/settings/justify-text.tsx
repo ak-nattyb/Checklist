@@ -7,12 +7,12 @@ const OPTIONS = [
   { label: "Right", value: "Right" },
 ];
 
-export default function DisplayModeScreen() {
+export default function JustifyTextScreen() {
   const { justifyText, setJustifyText } = useJustifyText();
 
   return (
     <OptionsSelector
-      title="Display Mode"
+      title="Justify Text"
       options={OPTIONS}
       selectedValue={justifyText.toString()}
       onSelect={(value) => setJustifyText(value as JustifyText)}
