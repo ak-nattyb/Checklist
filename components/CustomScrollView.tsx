@@ -56,7 +56,7 @@ const CustomScrollView = <T,>({
   );
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, flexDirection: "row", width: "100%" }}>
       <FlatList
         style={[{ width: "100%" }, style]}
         contentContainerStyle={[
@@ -88,16 +88,25 @@ const CustomScrollView = <T,>({
       {scrollIndicatorHeight > 0 && (
         <View
           style={[
-            styles.scrollIndicatorTrack,
             { transform: [{ translateX: n(1) }] },
-            { backgroundColor: invertColors ? "black" : "white" },
+            {
+              backgroundColor: invertColors ? "black" : "white",
+              width: n(1),
+              height: "100%",
+              position: "absolute",
+              ...(justifyText === "Right" ? { left: n(-2) } : { right: n(-2) }),
+            },
           ]}
         >
           <Animated.View
             style={[
-              styles.scrollIndicatorThumb,
               {
                 backgroundColor: invertColors ? "black" : "white",
+                width: n(5),
+                position: "absolute",
+                ...(justifyText === "Right"
+                  ? { left: n(-2) }
+                  : { right: n(-2) }),
               },
               {
                 height: scrollIndicatorHeight,
@@ -114,24 +123,5 @@ const CustomScrollView = <T,>({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    width: "100%",
-  },
-  scrollIndicatorTrack: {
-    width: n(1),
-    height: "100%",
-    position: "absolute",
-    right: n(-2),
-  },
-  scrollIndicatorThumb: {
-    width: n(5),
-    position: "absolute",
-    right: n(-2),
-  },
-});
 
 export default CustomScrollView;

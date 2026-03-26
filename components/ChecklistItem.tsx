@@ -71,13 +71,14 @@ export function ChecklistItem({ text, id }: ButtonProps) {
           }
         >
           <StyledText
-            style={
+            style={[
               displayMode === "Lg"
                 ? LgStyles.text
                 : displayMode === "Md"
                   ? MdStyles.text
-                  : SmStyles.text
-            }
+                  : SmStyles.text,
+              { textAlign: justifyText === "Right" ? "right" : "left" },
+            ]}
             onPress={() => router.push(`/edit-title?id=${id}`)}
             onLongPress={() => router.push(`/delete-item?id=${id}`)}
           >
@@ -115,13 +116,14 @@ export function ChecklistItem({ text, id }: ButtonProps) {
           }
         >
           <StyledText
-            style={
+            style={[
               displayMode === "Lg"
                 ? LgStyles.text
                 : displayMode === "Md"
                   ? MdStyles.text
-                  : SmStyles.text
-            }
+                  : SmStyles.text,
+              { textAlign: justifyText === "Left" ? "left" : "right" },
+            ]}
             onPress={() => router.push(`/edit-title?id=${id}`)}
             onLongPress={() => router.push(`/delete-item?id=${id}`)}
           >
@@ -135,6 +137,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
 
 const LgStyles = StyleSheet.create({
   primaryContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -150,6 +153,7 @@ const LgStyles = StyleSheet.create({
 
 const MdStyles = StyleSheet.create({
   primaryContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -165,6 +169,7 @@ const MdStyles = StyleSheet.create({
 
 const SmStyles = StyleSheet.create({
   primaryContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
