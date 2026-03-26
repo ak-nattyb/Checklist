@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
+import { useJustifyText } from "@/contexts/JustifyTextContext";
 
 interface CustomScrollViewProps<T = any> extends FlatListProps<T> {
   // We can add any custom props here if needed in the future
@@ -21,6 +22,7 @@ const CustomScrollView = <T,>({
   ...rest
 }: CustomScrollViewProps<T>) => {
   const { invertColors } = useInvertColors();
+  const { justifyText } = useJustifyText();
   const [contentHeight, setContentHeight] = useState<number>(0);
   const [scrollViewHeight, setScrollViewHeight] = useState<number>(0);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -57,7 +59,13 @@ const CustomScrollView = <T,>({
     <View style={styles.container}>
       <FlatList
         style={[{ width: "100%" }, style]}
-        contentContainerStyle={[{ flexGrow: 1 }, contentContainerStyle]}
+        contentContainerStyle={[
+          {
+            flexGrow: 1,
+            alignItems: justifyText === "Right" ? "flex-end" : "flex-start",
+          },
+          contentContainerStyle,
+        ]}
         showsVerticalScrollIndicator={false}
         overScrollMode="never"
         onContentSizeChange={(width, height) => {
