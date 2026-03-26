@@ -20,7 +20,7 @@ export default function EditTitle() {
 
   return (
     <ContentContainer
-      headerTitle="Rename Item"
+      headerTitle="Rename Entry"
       rightIcon="save"
       showRightIcon={input.length > 0}
       onRightIconPress={renameItem}
