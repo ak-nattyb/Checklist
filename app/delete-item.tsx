@@ -28,7 +28,7 @@ export default function DeleteItemScreen() {
   return (
     <ContentContainer headerTitle={"Delete Entry"}>
       <StyledText style={styles.messageText}>
-        {`Are you sure you want to delete "${itemName}"?`}
+        {`Are you sure you want to delete ${itemName}?`}
       </StyledText>
 
       <View style={styles.buttonContainer}>
