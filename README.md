@@ -13,12 +13,15 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 
 ## Features
 
-- Add new items to the list
-- Press on item title to rename it
-- Press on checkbox to toggle it between checked and unchecked
-- Long press on an item to delete
+- Press + to add an item
+- Press on item icon to check/uncheck
+- Long Press + to add a folder
+- Press on folder icon to navigate to folder
+- Press on item/folder title to rename
+- Long press on item/folder to delete
 - Checklist stores and persists between app loads/unloads and phone restarts
 - Change spacing between Small, Medium, and Large (defaults to Medium)
+- Change list alignment between Left and Right
 
 ## Acknowledgements
 
