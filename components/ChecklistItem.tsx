@@ -32,7 +32,7 @@ export function ChecklistItem({ text, id }: ButtonProps) {
   }
 
   return (
-    <View
+    <HapticPressable
       style={
         displayMode === "Lg"
           ? LgStyles.primaryContainer //100%
@@ -40,96 +40,60 @@ export function ChecklistItem({ text, id }: ButtonProps) {
             ? MdStyles.primaryContainer //75%
             : SmStyles.primaryContainer //50%
       }
+      onPress={flipChecked}
+      onLongPress={() => router.push(`/item-interaction-menu?id=${id}`)}
     >
       {justifyText === "Left" ? (
-        <HapticPressable
-          onPress={flipChecked}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        >
-          <MaterialIcons
-            name={isChecked ? "check-box" : "check-box-outline-blank"}
-            size={
-              displayMode === "Lg"
-                ? n(36) //100%
-                : displayMode === "Md"
-                  ? n(28) //80%
-                  : n(21) //60%
-            }
-            color={invertColors ? "black" : "white"}
-          />
-        </HapticPressable>
+        <MaterialIcons
+          name={isChecked ? "check-box" : "check-box-outline-blank"}
+          size={
+            displayMode === "Lg"
+              ? n(36) //100%
+              : displayMode === "Md"
+                ? n(28) //80%
+                : n(21) //60%
+          }
+          color={invertColors ? "black" : "white"}
+        />
       ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
+        <StyledText
           style={
             displayMode === "Lg"
-              ? LgStyles.textContainer
+              ? LgStyles.text
               : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
+                ? MdStyles.text
+                : SmStyles.text
           }
         >
-          <StyledText
-            style={
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text
-            }
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
-        </HapticPressable>
+          {text}
+        </StyledText>
       )}
       {justifyText === "Right" ? (
-        <HapticPressable
-          onPress={flipChecked}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        >
-          <MaterialIcons
-            name={isChecked ? "check-box" : "check-box-outline-blank"}
-            size={
-              displayMode === "Lg"
-                ? n(36) //100%
-                : displayMode === "Md"
-                  ? n(28) //80%
-                  : n(21) //60%
-            }
-            color={invertColors ? "black" : "white"}
-          />
-        </HapticPressable>
+        <MaterialIcons
+          name={isChecked ? "check-box" : "check-box-outline-blank"}
+          size={
+            displayMode === "Lg"
+              ? n(36) //100%
+              : displayMode === "Md"
+                ? n(28) //80%
+                : n(21) //60%
+          }
+          color={invertColors ? "black" : "white"}
+        />
       ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
+        <StyledText
           style={
             displayMode === "Lg"
-              ? LgStyles.textContainer
+              ? LgStyles.text
               : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
+                ? MdStyles.text
+                : SmStyles.text
           }
         >
-          <StyledText
-            style={
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text
-            }
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
-        </HapticPressable>
+          {text}
+        </StyledText>
       )}
-    </View>
+    </HapticPressable>
   );
 }
 
