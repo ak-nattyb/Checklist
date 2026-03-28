@@ -25,6 +25,7 @@ export default function Tab() {
     >
       <CustomScrollView
         data={visibleEntries}
+        onLongPress={}
         renderItem={({ item }) =>
           item.kind === "item" ? (
             <ChecklistItem
