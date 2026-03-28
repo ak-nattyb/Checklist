@@ -14,6 +14,7 @@ import { useJustifyText } from "@/contexts/JustifyTextContext";
 
 interface CustomScrollViewProps<T = any> extends FlatListProps<T> {
   // We can add any custom props here if needed in the future
+  onLongPress?: () => void;
 }
 
 const CustomScrollView = <T,>({
