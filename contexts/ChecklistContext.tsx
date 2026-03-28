@@ -34,6 +34,7 @@ interface ChecklistStore {
   //Items
   addItem: (text: string, location?: string) => void;
   toggleItem: (id: string) => void;
+  deleteCheckedItemsInFolder: (location: string) => void;
 
   //Folders
   addFolder: (text: string, location?: string) => void;
@@ -87,7 +88,7 @@ export const useChecklistStore = create<ChecklistStore>()(
       getEntryName: (id) => get().entries.find((e) => e.id === id)?.text ?? "",
 
       // Item actions
-      addItem: (text, location = "") =>
+      addItem: (text, location) =>
         set((state) => ({
           entries: [
             ...state.entries,
@@ -111,6 +112,14 @@ export const useChecklistStore = create<ChecklistStore>()(
             e.id === id && e.kind === "item"
               ? { ...e, isChecked: !e.isChecked }
               : e,
+          ),
+        })),
+
+      deleteCheckedItemsInFolder: (location) =>
+        set((state) => ({
+          entries: state.entries.filter(
+            (e) =>
+              !(e.location === location && e.kind === "item" && e.isChecked),
           ),
         })),
 
