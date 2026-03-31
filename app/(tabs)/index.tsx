@@ -5,6 +5,7 @@ import { ChecklistItem } from "@/components/ChecklistItem";
 import { ChecklistFolder } from "@/components/ChecklistFolder";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { router } from "expo-router";
 
 export default function Tab() {
   const { entries, getEntryName, activeFolderId, setActiveFolderId } =
@@ -25,7 +26,10 @@ export default function Tab() {
     >
       <CustomScrollView
         data={visibleEntries}
-        onLongPress={}
+        style={{ flex: 1 }}
+        onLongPress={() =>
+          router.push(`/bulk-delete-checked-items?id=${activeFolderId}`)
+        }
         renderItem={({ item }) =>
           item.kind === "item" ? (
             <ChecklistItem
