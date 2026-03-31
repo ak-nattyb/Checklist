@@ -5,12 +5,14 @@ import { ChecklistItem } from "@/components/ChecklistItem";
 import { ChecklistFolder } from "@/components/ChecklistFolder";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useHasCheckedItems } from "@/hooks/useHasCheckedItems";
 import { router } from "expo-router";
 
 export default function Tab() {
   const { entries, getEntryName, activeFolderId, setActiveFolderId } =
     useChecklistStore();
   const { displayMode } = useDisplayMode();
+  const hasCheckedItems = useHasCheckedItems();
 
   const headerTitle =
     activeFolderId === "" ? "Checklist" : getEntryName(activeFolderId);
@@ -23,13 +25,22 @@ export default function Tab() {
       headerTitle={headerTitle}
       hideBackButton={activeFolderId === ""}
       style={{ paddingHorizontal: n(20) }}
+      rightIcon="delete-outline"
+      showRightIcon={hasCheckedItems}
+      onRightIconPress={() =>
+        router.push(
+          `/bulk-delete-checked-items?id=${
+            useChecklistStore.getState().activeFolderId
+              ? useChecklistStore
+                  .getState()
+                  .getEntryName(useChecklistStore.getState().activeFolderId)
+              : ""
+          }`,
+        )
+      }
     >
       <CustomScrollView
         data={visibleEntries}
-        style={{ flex: 1 }}
-        onLongPress={() =>
-          router.push(`/bulk-delete-checked-items?id=${activeFolderId}`)
-        }
         renderItem={({ item }) =>
           item.kind === "item" ? (
             <ChecklistItem

@@ -11,10 +11,6 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 export default function BulkDeleteCheckedItemsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  //have to do some tricks to preserve the item name as it's being deleted
-  const liveFolderName = useChecklistStore().getEntryName(id);
-  const folderName = useRef(liveFolderName).current;
-
   //single line function here
   const bulkDeleteItems = useChecklistStore(
     (state) => state.deleteCheckedItemsInFolder,
@@ -35,7 +31,13 @@ export default function BulkDeleteCheckedItemsScreen() {
   return (
     <ContentContainer headerTitle={"Delete Checked Items"}>
       <StyledText style={styles.messageText}>
-        {`Are you sure you want to delete all checked items in ${folderName}?`}
+        {`Are you sure you want to delete all checked items in ${
+          useChecklistStore.getState().activeFolderId
+            ? useChecklistStore
+                .getState()
+                .getEntryName(useChecklistStore.getState().activeFolderId)
+            : "root folder"
+        }?`}
       </StyledText>
 
       <View style={styles.buttonContainer}>
