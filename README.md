@@ -19,6 +19,7 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 - Press on folder icon to navigate to folder
 - Press on item/folder title to rename
 - Long press on item/folder to delete
+- Press on delete icon to delete multiple checked items
 - Checklist stores and persists between app loads/unloads and phone restarts
 - Change spacing between Small, Medium, and Large (defaults to Medium)
 - Change list alignment between Left and Right
