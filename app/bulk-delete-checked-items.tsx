@@ -8,20 +8,18 @@ import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 
-export default function DeleteItemScreen() {
+export default function BulkDeleteCheckedItemsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  //have to do some tricks to preserve the item name as it's being deleted
-  const liveItemName = useChecklistStore().getEntryName(id);
-  const itemName = useRef(liveItemName).current;
-
   //single line function here
-  const deleteItem = useChecklistStore((state) => state.deleteEntry);
+  const bulkDeleteItems = useChecklistStore(
+    (state) => state.deleteCheckedItemsInFolder,
+  );
   const router = useRouter();
   const { invertColors } = useInvertColors();
 
   function handleConfirm() {
-    deleteItem(id);
+    bulkDeleteItems(id);
     router.back();
   }
   function handleCancel() {
@@ -31,9 +29,15 @@ export default function DeleteItemScreen() {
   const textColor = invertColors ? "black" : "white";
 
   return (
-    <ContentContainer headerTitle={"Delete Entry"}>
+    <ContentContainer headerTitle={"Delete Checked Items"}>
       <StyledText style={styles.messageText}>
-        {`Are you sure you want to delete ${itemName}?`}
+        {`Are you sure you want to delete all checked items in ${
+          useChecklistStore.getState().activeFolderId
+            ? useChecklistStore
+                .getState()
+                .getEntryName(useChecklistStore.getState().activeFolderId)
+            : "root folder"
+        }?`}
       </StyledText>
 
       <View style={styles.buttonContainer}>
