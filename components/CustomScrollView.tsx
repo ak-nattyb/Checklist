@@ -3,7 +3,6 @@ import {
   FlatList,
   View,
   Animated,
-  StyleSheet,
   FlatListProps,
   NativeSyntheticEvent,
   NativeScrollEvent,
@@ -13,7 +12,7 @@ import { n } from "@/utils/scaling";
 import { useJustifyText } from "@/contexts/JustifyTextContext";
 
 interface CustomScrollViewProps<T = any> extends FlatListProps<T> {
-  // We can add any custom props here if needed in the future
+  //we can add stuff here in the future
 }
 
 const CustomScrollView = <T,>({
