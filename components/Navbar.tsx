@@ -39,7 +39,8 @@ export function Navbar({
           onPress={() =>
             tab.screenName === "create-new"
               ? navigation.navigate(tab.screenName, {
-                  itemType: "item",
+                  itemType: "recurringitem",
+                  recurring: "",
                   location: useChecklistStore.getState().activeFolderId
                     ? useChecklistStore
                         .getState()
@@ -54,6 +55,7 @@ export function Navbar({
             tab.screenName === "create-new"
               ? navigation.navigate(tab.screenName, {
                   itemType: "folder",
+                  recurring: "",
                   location: useChecklistStore.getState().activeFolderId
                     ? useChecklistStore
                         .getState()

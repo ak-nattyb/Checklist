@@ -8,9 +8,10 @@ import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function CreateNew() {
   const [query, setQuery] = useState("");
-  const { itemType, location } = useLocalSearchParams<{
+  const { itemType, location, recurring } = useLocalSearchParams<{
     itemType: string;
     location: string;
+    recurring: string;
   }>();
 
   useFocusEffect(
@@ -27,6 +28,8 @@ export default function CreateNew() {
       useChecklistStore.getState().addFolder(query, location);
     } else if (itemType === "item") {
       useChecklistStore.getState().addItem(query, location);
+    } else if (itemType === "recurringitem") {
+      useChecklistStore.getState().addRecurringItem(query, recurring, location);
     }
     router.back();
   };
@@ -34,7 +37,11 @@ export default function CreateNew() {
   return (
     <ContentContainer
       headerTitle={
-        itemType === "item" ? "Create New Item" : "Create New Folder"
+        itemType === "item"
+          ? "Create New Item"
+          : itemType === "recurringitem"
+            ? "Create New Recurring Item"
+            : "Create New Folder"
       }
       rightIcon="save"
       showRightIcon={query.length > 0}
@@ -44,7 +51,13 @@ export default function CreateNew() {
       <SearchInput
         value={query}
         onChangeText={setQuery}
-        placeholder={itemType === "item" ? "Item Name" : "Folder Name"}
+        placeholder={
+          itemType === "item"
+            ? "Item Name"
+            : itemType === "recurringitem"
+              ? "Recurring Item Name"
+              : "Folder Name"
+        }
         onSubmit={addItem}
         autoFocus
       />

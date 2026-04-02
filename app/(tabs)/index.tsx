@@ -7,6 +7,7 @@ import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { useHasCheckedItems } from "@/hooks/useHasCheckedItems";
 import { router } from "expo-router";
+import { RecurringChecklistItem } from "@/components/RecurringChecklistItem";
 
 export default function Tab() {
   const { entries, getEntryName, activeFolderId, setActiveFolderId } =
@@ -44,6 +45,12 @@ export default function Tab() {
         renderItem={({ item }) =>
           item.kind === "item" ? (
             <ChecklistItem
+              id={item.id}
+              text={item.text}
+              location={item.location}
+            />
+          ) : item.kind === "recurringitem" ? (
+            <RecurringChecklistItem
               id={item.id}
               text={item.text}
               location={item.location}

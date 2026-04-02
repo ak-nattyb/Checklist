@@ -17,8 +17,10 @@ export interface ChecklistFolder extends BaseEntry {
   kind: "folder";
 }
 
-export interface RecurringChecklistItem extends ChecklistItem {
-  recurring: "string";
+export interface RecurringChecklistItem extends BaseEntry {
+  kind: "recurringitem";
+  isChecked: boolean;
+  recurring: string;
 }
 
 export type ChecklistEntry =
@@ -36,6 +38,7 @@ interface ChecklistStore {
   deleteEntry: (id: string) => void;
   moveEntry: (id: string, newLocation: string) => void;
   getEntry: (id: string) => ChecklistEntry | undefined;
+  getNumEntries: () => number;
   getEntryName: (id: string) => string;
 
   //Items
@@ -57,8 +60,6 @@ interface ChecklistStore {
   activeFolderId: string;
   setActiveFolderId: (id: string) => void;
 }
-
-const makeId = () => Date.now().toString();
 
 export const useChecklistStore = create<ChecklistStore>()(
   persist(
@@ -99,6 +100,8 @@ export const useChecklistStore = create<ChecklistStore>()(
 
       getEntry: (id) => get().entries.find((e) => e.id === id),
 
+      getNumEntries: () => get().entries.length,
+
       getEntryName: (id) => get().entries.find((e) => e.id === id)?.text ?? "",
 
       // Item actions
@@ -107,7 +110,7 @@ export const useChecklistStore = create<ChecklistStore>()(
           entries: [
             ...state.entries,
             {
-              id: makeId(),
+              id: state.entries.length.toString() + Date.now().toString(),
               kind: "item",
               text,
               isChecked: false,
@@ -123,7 +126,7 @@ export const useChecklistStore = create<ChecklistStore>()(
       toggleItem: (id) =>
         set((state) => ({
           entries: state.entries.map((e) =>
-            e.id === id && e.kind === "item"
+            e.id === id && (e.kind === "item" || e.kind === "recurringitem")
               ? { ...e, isChecked: !e.isChecked }
               : e,
           ),
@@ -143,7 +146,7 @@ export const useChecklistStore = create<ChecklistStore>()(
           entries: [
             ...state.entries,
             {
-              id: makeId(),
+              id: state.entries.length.toString() + Date.now().toString(),
               kind: "folder",
               text,
               location:
@@ -161,8 +164,8 @@ export const useChecklistStore = create<ChecklistStore>()(
           entries: [
             ...state.entries,
             {
-              id: makeId(),
-              kind: "item",
+              id: state.entries.length.toString() + Date.now().toString(),
+              kind: "recurringitem",
               recurring,
               text,
               isChecked: false,
