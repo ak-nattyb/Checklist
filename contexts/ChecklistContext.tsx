@@ -17,7 +17,14 @@ export interface ChecklistFolder extends BaseEntry {
   kind: "folder";
 }
 
-export type ChecklistEntry = ChecklistItem | ChecklistFolder;
+export interface RecurringChecklistItem extends ChecklistItem {
+  recurring: "string";
+}
+
+export type ChecklistEntry =
+  | ChecklistItem
+  | ChecklistFolder
+  | RecurringChecklistItem;
 
 // --- Store ---
 
@@ -38,6 +45,13 @@ interface ChecklistStore {
 
   //Folders
   addFolder: (text: string, location?: string) => void;
+
+  //RecurringItems
+  addRecurringItem: (
+    text: string,
+    recurring: string,
+    location?: string,
+  ) => void;
 
   //navigation
   activeFolderId: string;
@@ -132,6 +146,26 @@ export const useChecklistStore = create<ChecklistStore>()(
               id: makeId(),
               kind: "folder",
               text,
+              location:
+                location ??
+                (get().activeFolderId
+                  ? get().getEntryName(get().activeFolderId)
+                  : ""),
+            },
+          ],
+        })),
+
+      // Recurring Item actions
+      addRecurringItem: (text, recurring, location) =>
+        set((state) => ({
+          entries: [
+            ...state.entries,
+            {
+              id: makeId(),
+              kind: "item",
+              recurring,
+              text,
+              isChecked: false,
               location:
                 location ??
                 (get().activeFolderId
