@@ -1,66 +1,59 @@
-import { useState, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import ContentContainer from "@/components/ContentContainer";
-import { SearchInput } from "@/components/SearchInput";
 import { n } from "@/utils/scaling";
+import { router } from "expo-router";
+import { HapticPressable } from "@/components/HapticPressable";
+import { StyledText } from "@/components/StyledText";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function CreateNew() {
-  const [query, setQuery] = useState("");
-  const { itemType, location, recurring } = useLocalSearchParams<{
-    itemType: string;
-    location: string;
-    recurring: string;
-  }>();
-
-  useFocusEffect(
-    useCallback(() => {
-      setQuery("");
-    }, []),
-  );
-
-  const addItem = () => {
-    if (query.length === 0) return;
-
-    //check between a folder or an item
-    if (itemType === "folder") {
-      useChecklistStore.getState().addFolder(query, location);
-    } else if (itemType === "item") {
-      useChecklistStore.getState().addItem(query, location);
-    } else if (itemType === "recurringitem") {
-      useChecklistStore.getState().addRecurringItem(query, recurring, location);
-    }
-    router.back();
-  };
-
   return (
-    <ContentContainer
-      headerTitle={
-        itemType === "item"
-          ? "Create New Item"
-          : itemType === "recurringitem"
-            ? "Create New Recurring Item"
-            : "Create New Folder"
-      }
-      rightIcon="save"
-      showRightIcon={query.length > 0}
-      onRightIconPress={addItem}
-      style={styles.container}
-    >
-      <SearchInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder={
-          itemType === "item"
-            ? "Item Name"
-            : itemType === "recurringitem"
-              ? "Recurring Item Name"
-              : "Folder Name"
+    <ContentContainer headerTitle="Choose Item" style={styles.container}>
+      <HapticPressable
+        onPress={() =>
+          router.push(
+            `/create-new-type?itemType=item&location=${
+              useChecklistStore.getState().activeFolderId
+                ? useChecklistStore
+                    .getState()
+                    .getEntryName(useChecklistStore.getState().activeFolderId)
+                : ""
+            }`,
+          )
         }
-        onSubmit={addItem}
-        autoFocus
-      />
+      >
+        <StyledText style={styles.text}>{"Add New Item"}</StyledText>
+      </HapticPressable>
+      <HapticPressable
+        onPress={() =>
+          router.push(
+            `/create-new-type?itemType=recurringitem&location=${
+              useChecklistStore.getState().activeFolderId
+                ? useChecklistStore
+                    .getState()
+                    .getEntryName(useChecklistStore.getState().activeFolderId)
+                : ""
+            }&recurring=""`,
+          )
+        }
+      >
+        <StyledText style={styles.text}>{"Add Recurring Item"}</StyledText>
+      </HapticPressable>
+      <HapticPressable
+        onPress={() =>
+          router.push(
+            `/create-new-type?itemType=folder&location=${
+              useChecklistStore.getState().activeFolderId
+                ? useChecklistStore
+                    .getState()
+                    .getEntryName(useChecklistStore.getState().activeFolderId)
+                : ""
+            }`,
+          )
+        }
+      >
+        <StyledText style={styles.text}>{"Add New Folder"}</StyledText>
+      </HapticPressable>
     </ContentContainer>
   );
 }
@@ -69,5 +62,8 @@ const styles = StyleSheet.create({
   container: {
     gap: n(32),
     paddingBottom: n(20),
+  },
+  text: {
+    fontSize: n(30),
   },
 });
