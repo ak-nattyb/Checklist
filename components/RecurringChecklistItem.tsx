@@ -42,7 +42,7 @@ export function RecurringChecklistItem({ text, id }: ButtonProps) {
             : SmStyles.primaryContainer //50%
       }
     >
-      {justifyText === "Left" ? (
+      {justifyText === "Left" && (
         <HapticPressable
           onPress={check}
           onLongPress={() => router.push(`/delete-item?id=${id}`)}
@@ -58,36 +58,35 @@ export function RecurringChecklistItem({ text, id }: ButtonProps) {
             }
             color={invertColors ? "black" : "white"}
           />
-        </HapticPressable>
-      ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          style={
-            displayMode === "Lg"
-              ? LgStyles.textContainer
-              : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
-          }
-        >
-          <StyledText
-            style={[
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text,
-              { textAlign: justifyText === "Right" ? "right" : "left" },
-            ]}
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
         </HapticPressable>
       )}
-      {justifyText === "Right" ? (
+      <HapticPressable
+        onPress={() => router.push(`/edit-title?id=${id}`)}
+        onLongPress={() => router.push(`/delete-item?id=${id}`)}
+        style={
+          displayMode === "Lg"
+            ? LgStyles.textContainer
+            : displayMode === "Md"
+              ? MdStyles.textContainer
+              : SmStyles.textContainer
+        }
+      >
+        <StyledText
+          style={[
+            displayMode === "Lg"
+              ? LgStyles.text
+              : displayMode === "Md"
+                ? MdStyles.text
+                : SmStyles.text,
+            { textAlign: justifyText === "Right" ? "right" : "left" },
+          ]}
+          onPress={() => router.push(`/edit-title?id=${id}`)}
+          onLongPress={() => router.push(`/delete-item?id=${id}`)}
+        >
+          {text}
+        </StyledText>
+      </HapticPressable>
+      {justifyText === "Right" && (
         <HapticPressable
           onPress={check}
           onLongPress={() => router.push(`/delete-item?id=${id}`)}
@@ -103,33 +102,6 @@ export function RecurringChecklistItem({ text, id }: ButtonProps) {
             }
             color={invertColors ? "black" : "white"}
           />
-        </HapticPressable>
-      ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          style={
-            displayMode === "Lg"
-              ? LgStyles.textContainer
-              : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
-          }
-        >
-          <StyledText
-            style={[
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text,
-              { textAlign: justifyText === "Left" ? "left" : "right" },
-            ]}
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
         </HapticPressable>
       )}
     </View>
