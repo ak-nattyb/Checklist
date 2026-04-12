@@ -33,7 +33,7 @@ export default function ListScreen() {
         })
       }
       rightAction={{
-        icon: "playlist-add",
+        icon: "add",
         onPress: () =>
           router.push({
             pathname: "/add-item",
