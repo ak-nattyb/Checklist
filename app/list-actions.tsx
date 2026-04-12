@@ -90,11 +90,11 @@ export default function ListActionsScreen() {
       <StyledButton
         onPress={() =>
           router.push({
-            pathname: "/reorder-items",
+            pathname: "/manage-items",
             params: { id },
           } as never)
         }
-        text="Reorder Items"
+        text="Manage Items"
       />
       <StyledButton
         onPress={handleCopyMarkdown}

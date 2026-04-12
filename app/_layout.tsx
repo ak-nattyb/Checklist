@@ -37,7 +37,8 @@ function RootNavigation() {
       <Stack.Screen name="edit-title" />
       <Stack.Screen name="list/[id]" />
       <Stack.Screen name="list-actions" />
-      <Stack.Screen name="reorder-items" />
+      <Stack.Screen name="manage-items" />
+      <Stack.Screen name="delete-items" />
       <Stack.Screen name="reorder-lists" />
     </Stack>
   );

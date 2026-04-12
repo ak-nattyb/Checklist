@@ -27,6 +27,7 @@ interface ChecklistStore {
   addList: (name: string) => string;
   changeListIcon: (id: string, iconName: ListIconName) => void;
   deleteItem: (id: string) => void;
+  deleteItems: (ids: string[]) => void;
   deleteList: (id: string) => void;
   duplicateItem: (id: string) => string | undefined;
   duplicateList: (id: string) => string | undefined;
@@ -313,10 +314,20 @@ export const useChecklistStore = create<ChecklistStore>()(
         }));
       },
 
-      deleteItem: (id) =>
+      deleteItem: (id) => {
+        get().deleteItems([id]);
+      },
+
+      deleteItems: (ids) => {
+        const idsToDelete = new Set(ids.filter(Boolean));
+        if (idsToDelete.size === 0) {
+          return;
+        }
+
         set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        })),
+          items: state.items.filter((item) => !idsToDelete.has(item.id)),
+        }));
+      },
 
       deleteList: (id) => {
         if (isInboxList(id)) {
