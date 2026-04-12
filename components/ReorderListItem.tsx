@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     minHeight: n(50),
+    width: "100%",
   },
   iconBox: {
     alignItems: "center",
@@ -101,5 +102,6 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginRight: n(15),
+    paddingVertical: n(13),
   },
 });

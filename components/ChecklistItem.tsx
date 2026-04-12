@@ -26,7 +26,7 @@ export function ChecklistItem({ id, text }: ChecklistItemProps) {
     } as never);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isChecked && styles.checkedContainer]}>
       <HapticPressable
         onLongPress={openItemActions}
         onPress={() => toggleItem(id)}
@@ -34,7 +34,7 @@ export function ChecklistItem({ id, text }: ChecklistItemProps) {
       >
         <MaterialIcons
           color={iconColor}
-          name={isChecked ? "radio-button-checked" : "radio-button-unchecked"}
+          name={isChecked ? "check-box" : "check-box-outline-blank"}
           size={n(28)}
         />
       </HapticPressable>
@@ -43,13 +43,21 @@ export function ChecklistItem({ id, text }: ChecklistItemProps) {
         onPress={() => toggleItem(id)}
         style={styles.textContainer}
       >
-        <StyledText style={styles.text}>{text}</StyledText>
+        <StyledText style={[styles.text, isChecked && styles.checkedText]}>
+          {text}
+        </StyledText>
       </HapticPressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  checkedContainer: {
+    opacity: 0.5,
+  },
+  checkedText: {
+    textDecorationLine: "line-through",
+  },
   container: {
     alignItems: "flex-start",
     flexDirection: "row",
