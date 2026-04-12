@@ -13,7 +13,6 @@ import {
 } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { usePreventDoubleTap } from "@/hooks/usePreventDoubleTap";
-import { getListHref } from "@/utils/routes";
 import { n } from "@/utils/scaling";
 
 export default function AddToListScreen() {
@@ -40,7 +39,12 @@ export default function AddToListScreen() {
     }
 
     addItem(itemText, selectedId);
-    router.dismissTo(getListHref(selectedId));
+    router.dismissTo({
+      pathname: "/(tabs)/create-new",
+      params: {
+        resetToken: `${Date.now()}`,
+      },
+    });
   });
 
   const handleCreateList = usePreventDoubleTap(() => {

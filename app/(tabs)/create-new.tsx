@@ -1,16 +1,29 @@
-import { router, useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ContentContainer from "@/components/ContentContainer";
 import { TextInput } from "@/components/TextInput";
 
 export default function AddItemScreen() {
+  const { resetToken } = useLocalSearchParams<{ resetToken?: string }>();
   const [itemName, setItemName] = useState("");
+  const [inputKey, setInputKey] = useState(0);
+  const lastHandledResetToken = useRef<string | undefined>(undefined);
 
   useFocusEffect(
     useCallback(() => {
-      setItemName("");
+      setInputKey((currentKey) => currentKey + 1);
     }, [])
   );
+
+  useEffect(() => {
+    if (!(resetToken && lastHandledResetToken.current !== resetToken)) {
+      return;
+    }
+
+    lastHandledResetToken.current = resetToken;
+    setItemName("");
+    setInputKey((currentKey) => currentKey + 1);
+  }, [resetToken]);
 
   const handleNext = () => {
     const trimmedName = itemName.trim();
@@ -36,6 +49,7 @@ export default function AddItemScreen() {
     >
       <TextInput
         autoFocus
+        key={inputKey}
         onChangeText={setItemName}
         onSubmit={handleNext}
         placeholder="Item Name"
