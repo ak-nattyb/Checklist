@@ -8,7 +8,6 @@ import { StyledText } from "./StyledText";
 interface ChecklistListProps {
   iconName?: keyof typeof MaterialIcons.glyphMap;
   isActive?: boolean;
-  onIconLongPress?: () => void;
   onLongPress?: () => void;
   onOpen: () => void;
   text: string;
@@ -17,7 +16,6 @@ interface ChecklistListProps {
 export function ChecklistList({
   iconName = "list",
   isActive = false,
-  onIconLongPress,
   onLongPress,
   onOpen,
   text,
@@ -25,28 +23,23 @@ export function ChecklistList({
   const { invertColors } = useInvertColors();
 
   return (
-    <View style={[styles.container, isActive && styles.activeContainer]}>
-      <HapticPressable
-        onLongPress={onIconLongPress ?? onLongPress}
-        onPress={onIconLongPress ? undefined : onOpen}
+    <HapticPressable
+      onLongPress={onLongPress}
+      onPress={onOpen}
+      style={[styles.container, isActive && styles.activeContainer]}
+    >
+      <View
+        style={[
+          styles.iconBox,
+          { backgroundColor: invertColors ? "black" : "#282828" },
+        ]}
       >
-        <View
-          style={[
-            styles.iconBox,
-            { backgroundColor: invertColors ? "black" : "#282828" },
-          ]}
-        >
-          <MaterialIcons color="white" name={iconName} size={n(24)} />
-        </View>
-      </HapticPressable>
-      <HapticPressable
-        onLongPress={onLongPress}
-        onPress={onOpen}
-        style={styles.textContainer}
-      >
+        <MaterialIcons color="white" name={iconName} size={n(24)} />
+      </View>
+      <View style={styles.textContainer}>
         <StyledText style={styles.text}>{text}</StyledText>
-      </HapticPressable>
-    </View>
+      </View>
+    </HapticPressable>
   );
 }
 
@@ -73,5 +66,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    paddingVertical: n(13),
   },
 });

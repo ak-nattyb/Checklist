@@ -10,6 +10,10 @@ export const HapticPressable = (props: PressableProps) => {
         triggerHaptic();
         props.onPress?.(event);
       }}
+      onLongPress={(event) => {
+        triggerHaptic();
+        props.onLongPress?.(event);
+      }}
     />
   );
 };
