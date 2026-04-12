@@ -1,61 +1,59 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { StyledText } from "./StyledText";
-import { HapticPressable } from "./HapticPressable";
+import { StyleSheet, View } from "react-native";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
-
-interface ToggleSwitchGraphicProps {
-  value: boolean;
-  disabled?: boolean;
-  color?: string;
-}
+import { HapticPressable } from "./HapticPressable";
+import { StyledText } from "./StyledText";
 
 const CIRCLE_DIAMETER = n(9.8);
 const CIRCLE_BORDER = n(2.5);
 const LINE_WIDTH = n(14.5);
 const LINE_HEIGHT = n(2.22);
 
-const ToggleSwitchGraphic = ({ value }: ToggleSwitchGraphicProps) => {
+const graphicStyles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  circle: {
+    width: CIRCLE_DIAMETER,
+    height: CIRCLE_DIAMETER,
+    borderRadius: CIRCLE_DIAMETER / 2,
+  },
+  hollowCircle: {
+    width: CIRCLE_DIAMETER,
+    height: CIRCLE_DIAMETER,
+    borderRadius: CIRCLE_DIAMETER / 2,
+    borderWidth: CIRCLE_BORDER,
+  },
+  line: {
+    width: LINE_WIDTH,
+    height: LINE_HEIGHT,
+  },
+});
+
+const ToggleSwitchGraphic = ({ value }: { value: boolean }) => {
   const { invertColors } = useInvertColors();
   const switchColor = invertColors ? "black" : "white";
 
-  const graphicStyles = StyleSheet.create({
-    container: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    circle: {
-      width: CIRCLE_DIAMETER,
-      height: CIRCLE_DIAMETER,
-      borderRadius: CIRCLE_DIAMETER / 2,
-      backgroundColor: switchColor,
-    },
-    hollowCircle: {
-      width: CIRCLE_DIAMETER,
-      height: CIRCLE_DIAMETER,
-      borderRadius: CIRCLE_DIAMETER / 2,
-      borderWidth: CIRCLE_BORDER,
-      borderColor: switchColor,
-    },
-    line: {
-      width: LINE_WIDTH,
-      height: LINE_HEIGHT,
-      backgroundColor: switchColor,
-    },
-  });
-
   return (
     <View style={graphicStyles.container}>
-      {!value ? (
+      {value ? (
         <>
-          <View style={graphicStyles.hollowCircle} />
-          <View style={graphicStyles.line} />
+          <View
+            style={[graphicStyles.line, { backgroundColor: switchColor }]}
+          />
+          <View
+            style={[graphicStyles.circle, { backgroundColor: switchColor }]}
+          />
         </>
       ) : (
         <>
-          <View style={graphicStyles.line} />
-          <View style={graphicStyles.circle} />
+          <View
+            style={[graphicStyles.hollowCircle, { borderColor: switchColor }]}
+          />
+          <View
+            style={[graphicStyles.line, { backgroundColor: switchColor }]}
+          />
         </>
       )}
     </View>
@@ -64,29 +62,25 @@ const ToggleSwitchGraphic = ({ value }: ToggleSwitchGraphicProps) => {
 
 interface ToggleSwitchProps {
   label: string;
-  value: boolean;
   onValueChange: (value: boolean) => void;
-  color?: string;
+  value: boolean;
 }
 
 export function ToggleSwitch({
   label,
   value,
   onValueChange,
-  color = "white",
 }: ToggleSwitchProps) {
   return (
     <HapticPressable
-      onPress={() => {
-        onValueChange(!value);
-      }}
-      style={[styles.container]}
+      onPress={() => onValueChange(!value)}
+      style={styles.container}
     >
       <View style={styles.switchTouchable}>
-        <ToggleSwitchGraphic value={value} color={color} />
+        <ToggleSwitchGraphic value={value} />
       </View>
       <View style={styles.textTouchable}>
-        <StyledText style={[styles.label]}>{label}</StyledText>
+        <StyledText style={styles.label}>{label}</StyledText>
       </View>
     </HapticPressable>
   );

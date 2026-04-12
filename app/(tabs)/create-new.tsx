@@ -1,60 +1,46 @@
-import { useState, useCallback } from "react";
-import { StyleSheet } from "react-native";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import ContentContainer from "@/components/ContentContainer";
-import { SearchInput } from "@/components/SearchInput";
-import { n } from "@/utils/scaling";
-import { useChecklistStore } from "@/contexts/ChecklistContext";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { TextInput } from "@/components/TextInput";
 
-export default function CreateNew() {
-  const [query, setQuery] = useState("");
-  const { itemType, location } = useLocalSearchParams<{
-    itemType: string;
-    location: string;
-  }>();
+export default function AddItemScreen() {
+  const [itemName, setItemName] = useState("");
 
   useFocusEffect(
     useCallback(() => {
-      setQuery("");
-    }, []),
+      setItemName("");
+    }, [])
   );
 
-  const addItem = () => {
-    if (query.length === 0) return;
-
-    //check between a folder or an item
-    if (itemType === "folder") {
-      useChecklistStore.getState().addFolder(query, location);
-    } else if (itemType === "item") {
-      useChecklistStore.getState().addItem(query, location);
+  const handleNext = () => {
+    const trimmedName = itemName.trim();
+    if (!trimmedName) {
+      return;
     }
-    router.back();
+
+    router.push({
+      pathname: "/add-to-list",
+      params: { itemName: trimmedName },
+    });
   };
 
   return (
     <ContentContainer
-      headerTitle={
-        itemType === "item" ? "Create New Item" : "Create New Folder"
-      }
-      rightIcon="save"
-      showRightIcon={query.length > 0}
-      onRightIconPress={addItem}
-      style={styles.container}
+      headerTitle="Add Item"
+      hideBackButton
+      rightAction={{
+        icon: "arrow-forward",
+        onPress: handleNext,
+        show: itemName.trim().length > 0,
+      }}
     >
-      <SearchInput
-        value={query}
-        onChangeText={setQuery}
-        placeholder={itemType === "item" ? "Item Name" : "Folder Name"}
-        onSubmit={addItem}
+      <TextInput
         autoFocus
+        onChangeText={setItemName}
+        onSubmit={handleNext}
+        placeholder="Item Name"
+        value={itemName}
       />
     </ContentContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: n(32),
-    paddingBottom: n(20),
-  },
-});

@@ -1,21 +1,23 @@
-import { useRef, useCallback } from "react";
+import { useCallback, useRef } from "react";
 
-const DEBOUNCE_MS = 600;
+const DEFAULT_DELAY_MS = 600;
 
+// biome-ignore lint/suspicious/noExplicitAny: generic constraint requires any for callback variance.
 export function usePreventDoubleTap<T extends (...args: any[]) => any>(
-    callback: T
-): T {
-    const lastTapTime = useRef(0);
+  handler: T,
+  delay = DEFAULT_DELAY_MS
+): (...args: Parameters<T>) => void {
+  const lastInvokedRef = useRef(0);
 
-    return useCallback(
-        ((...args: Parameters<T>) => {
-            const now = Date.now();
-            if (now - lastTapTime.current < DEBOUNCE_MS) {
-                return;
-            }
-            lastTapTime.current = now;
-            return callback(...args);
-        }) as T,
-        [callback]
-    );
+  return useCallback(
+    (...args: Parameters<T>) => {
+      const now = Date.now();
+      if (now - lastInvokedRef.current < delay) {
+        return;
+      }
+      lastInvokedRef.current = now;
+      handler(...args);
+    },
+    [handler, delay]
+  );
 }

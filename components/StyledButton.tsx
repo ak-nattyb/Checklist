@@ -1,25 +1,20 @@
-import React from "react";
 import { StyleSheet } from "react-native";
-import { StyledText } from "./StyledText";
-import { HapticPressable } from "./HapticPressable";
 import { n } from "@/utils/scaling";
+import { HapticPressable } from "./HapticPressable";
+import { StyledText } from "./StyledText";
 
 interface ButtonProps {
-  text: string;
   onPress?: () => void;
-  underline?: boolean;
+  selected?: boolean;
+  text: string;
 }
 
-export function StyledButton({
-  text,
-  onPress,
-  underline = false,
-}: ButtonProps) {
+export function StyledButton({ text, onPress, selected = false }: ButtonProps) {
   return (
-    <HapticPressable style={styles.button} onPress={onPress}>
+    <HapticPressable onPress={onPress} style={styles.button}>
       <StyledText
-        style={[styles.buttonText, underline && styles.underline]}
         numberOfLines={1}
+        style={[styles.buttonText, selected && styles.selected]}
       >
         {text}
       </StyledText>
@@ -36,7 +31,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: n(30),
   },
-  underline: {
+  selected: {
     textDecorationLine: "underline",
   },
 });

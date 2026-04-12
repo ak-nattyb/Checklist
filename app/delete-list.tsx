@@ -1,39 +1,51 @@
 import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import ContentContainer from "@/components/ContentContainer";
 import { HapticPressable } from "@/components/HapticPressable";
 import { StyledText } from "@/components/StyledText";
-import { useChecklistStore } from "@/contexts/ChecklistContext";
+import { isInboxList, useChecklistStore } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
-import { getListHref } from "@/utils/routes";
 import { n } from "@/utils/scaling";
 
-export default function DeleteItemScreen() {
+export default function DeleteListScreen() {
   const { id = "" } = useLocalSearchParams<{ id?: string }>();
-  const item = useChecklistStore((state) =>
-    state.items.find((candidate) => candidate.id === id)
+  const list = useChecklistStore((state) =>
+    state.lists.find((candidate) => candidate.id === id)
   );
-  const deleteItem = useChecklistStore((state) => state.deleteItem);
+  const itemCount = useChecklistStore(
+    (state) => state.items.filter((item) => item.listId === id).length
+  );
+  const deleteList = useChecklistStore((state) => state.deleteList);
   const { invertColors } = useInvertColors();
   const textColor = invertColors ? "black" : "white";
 
-  const handleDelete = () => {
-    if (item) {
-      deleteItem(item.id);
-      router.dismissTo(getListHref(item.listId));
-      return;
+  useEffect(() => {
+    if (isInboxList(id)) {
+      router.dismissTo("/(tabs)");
     }
+  }, [id]);
 
+  const handleDelete = () => {
+    if (id && !isInboxList(id)) {
+      deleteList(id);
+    }
     router.dismissTo("/(tabs)");
   };
 
-  if (!item) {
+  if (!list) {
     return (
-      <ContentContainer contentGap={20} headerTitle="Delete Item">
-        <StyledText style={styles.messageText}>Item not found.</StyledText>
+      <ContentContainer contentGap={20} headerTitle="Delete List">
+        <StyledText style={styles.messageText}>List not found.</StyledText>
       </ContentContainer>
     );
   }
+
+  if (isInboxList(id)) {
+    return null;
+  }
+
+  const itemLabel = itemCount === 1 ? "item" : "items";
 
   return (
     <ContentContainer
@@ -45,10 +57,10 @@ export default function DeleteItemScreen() {
           </StyledText>
         </HapticPressable>
       }
-      headerTitle="Delete Item"
+      headerTitle="Delete List"
     >
       <StyledText style={styles.messageText}>
-        {`Are you sure you want to delete ${item.text}?`}
+        {`Are you sure you want to delete ${list.name} and all of its ${itemCount} ${itemLabel}?`}
       </StyledText>
     </ContentContainer>
   );

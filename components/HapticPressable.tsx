@@ -1,18 +1,15 @@
-import { Pressable, PressableProps } from "react-native";
-import { useHaptic } from "../contexts/HapticContext";
+import { Pressable, type PressableProps } from "react-native";
+import { triggerHaptic } from "@/utils/haptics";
 
 export const HapticPressable = (props: PressableProps) => {
-    const { triggerHaptic } = useHaptic();
-
-    return (
-        <Pressable
-            {...props}
-            onPress={(event) => {
-                triggerHaptic();
-                props.onPress?.(event);
-            }}
-            android_disableSound={true}
-        />
-    );
+  return (
+    <Pressable
+      {...props}
+      android_disableSound={true}
+      onPress={(event) => {
+        triggerHaptic();
+        props.onPress?.(event);
+      }}
+    />
+  );
 };
-

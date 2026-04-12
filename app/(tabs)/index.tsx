@@ -1,71 +1,53 @@
-import ContentContainer from "@/components/ContentContainer";
-import CustomScrollView from "@/components/CustomScrollView";
-import { n } from "@/utils/scaling";
-import { ChecklistItem } from "@/components/ChecklistItem";
-import { ChecklistFolder } from "@/components/ChecklistFolder";
-import { useChecklistStore } from "@/contexts/ChecklistContext";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
-import { useHasCheckedItems } from "@/hooks/useHasCheckedItems";
 import { router } from "expo-router";
+import { ChecklistList } from "@/components/ChecklistList";
+import ContentContainer from "@/components/ContentContainer";
+import { StyledText } from "@/components/StyledText";
+import { getSafeListIconName, INBOX_ICON } from "@/constants/listIcons";
+import { INBOX_LIST_ID, useChecklistStore } from "@/contexts/ChecklistContext";
+import { getListHref } from "@/utils/routes";
+import { n } from "@/utils/scaling";
 
-export default function Tab() {
-  const { entries, getEntryName, activeFolderId, setActiveFolderId } =
-    useChecklistStore();
-  const { displayMode } = useDisplayMode();
-  const hasCheckedItems = useHasCheckedItems();
-
-  const headerTitle =
-    activeFolderId === "" ? "Checklist" : getEntryName(activeFolderId);
-  const visibleEntries = activeFolderId
-    ? entries.filter((e) => e.location === getEntryName(activeFolderId))
-    : entries.filter((e) => e.location === "");
+export default function ListsScreen() {
+  const lists = useChecklistStore((state) => state.lists);
 
   return (
     <ContentContainer
-      headerTitle={headerTitle}
-      hideBackButton={activeFolderId === ""}
-      style={{ paddingHorizontal: n(20) }}
-      rightIcon="delete-outline"
-      showRightIcon={hasCheckedItems}
-      onRightIconPress={() =>
-        router.push(
-          `/bulk-delete-checked-items?id=${
-            useChecklistStore.getState().activeFolderId
-              ? useChecklistStore
-                  .getState()
-                  .getEntryName(useChecklistStore.getState().activeFolderId)
-              : ""
-          }`,
-        )
-      }
+      contentGap={8}
+      contentWidth="wide"
+      headerTitle="Checklist"
+      hideBackButton
+      key="lists-root"
+      leftAction={{
+        icon: "swap-vert",
+        onPress: () => router.push("/reorder-lists"),
+      }}
+      rightAction={{
+        icon: "add",
+        onPress: () => router.push("/create-list"),
+      }}
     >
-      <CustomScrollView
-        data={visibleEntries}
-        renderItem={({ item }) =>
-          item.kind === "item" ? (
-            <ChecklistItem
-              id={item.id}
-              text={item.text}
-              location={item.location}
-            />
-          ) : (
-            <ChecklistFolder
-              id={item.id}
-              text={item.text}
-              location={item.location}
-              onPress={() => setActiveFolderId(item.id)}
-            />
-          )
-        }
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={
-          displayMode === "Lg"
-            ? { gap: n(25) } //100%
-            : displayMode === "Md"
-              ? { gap: n(20) } //80%
-              : { gap: n(15) } //60%
-        }
-      />
+      {lists.length === 0 ? (
+        <StyledText style={{ fontSize: n(18) }}>No lists yet.</StyledText>
+      ) : (
+        lists.map((item) => (
+          <ChecklistList
+            iconName={
+              item.id === INBOX_LIST_ID
+                ? INBOX_ICON
+                : getSafeListIconName(item.iconName)
+            }
+            key={item.id}
+            onLongPress={() =>
+              router.push({
+                pathname: "/list-actions",
+                params: { id: item.id },
+              })
+            }
+            onOpen={() => router.push(getListHref(item.id))}
+            text={item.name}
+          />
+        ))
+      )}
     </ContentContainer>
   );
 }

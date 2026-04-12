@@ -1,82 +1,76 @@
-import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
 import { router } from "expo-router";
-import { StyledText } from "./StyledText";
-import { HapticPressable } from "./HapticPressable";
+import { StyleSheet, View } from "react-native";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
-import { useChecklistStore } from "@/contexts/ChecklistContext";
+import { HapticPressable } from "./HapticPressable";
+import { StyledText } from "./StyledText";
+
+interface RightAction {
+  icon: keyof typeof MaterialIcons.glyphMap;
+  onPress: () => void;
+  show?: boolean;
+}
+
+interface LeftAction {
+  icon: keyof typeof MaterialIcons.glyphMap;
+  onPress: () => void;
+  show?: boolean;
+}
 
 interface HeaderProps {
   headerTitle?: string;
   hideBackButton?: boolean;
+  leftAction?: LeftAction;
   onBackPress?: () => void;
-  leftIcon?: keyof typeof MaterialIcons.glyphMap;
-  onLeftIconPress?: () => void;
-  rightIcon?: keyof typeof MaterialIcons.glyphMap;
-  onRightIconPress?: () => void;
+  onTitlePress?: () => void;
+  rightAction?: RightAction;
 }
 
 export function Header({
   headerTitle,
   hideBackButton = false,
+  leftAction,
   onBackPress,
-  leftIcon,
-  onLeftIconPress,
-  rightIcon,
-  onRightIconPress,
+  onTitlePress,
+  rightAction,
 }: HeaderProps) {
   const { invertColors } = useInvertColors();
   const iconColor = invertColors ? "black" : "white";
 
-  const handleBack =
-    onBackPress ??
-    (() => {
-      useChecklistStore.getState().setActiveFolderId("");
-      if (router.canGoBack()) {
-        router.back();
-      }
-    });
+  const handleBack = () => {
+    if (onBackPress) {
+      onBackPress();
+      return;
+    }
 
-  const renderLeftButton = () => {
-    if (!hideBackButton) {
-      return (
-        <HapticPressable onPress={handleBack}>
-          <View style={styles.button}>
-            <MaterialIcons
-              name="arrow-back-ios"
-              size={n(28)}
-              color={iconColor}
-            />
-          </View>
-        </HapticPressable>
-      );
+    if (router.canGoBack()) {
+      router.back();
     }
-    if (leftIcon) {
-      return (
-        <HapticPressable onPress={onLeftIconPress}>
-          <View style={styles.button}>
-            <MaterialIcons name={leftIcon} size={n(28)} color={iconColor} />
-          </View>
-        </HapticPressable>
-      );
-    }
-    return <View style={styles.button} />;
   };
 
-  const renderRightButton = () => {
-    if (rightIcon) {
-      return (
-        <HapticPressable onPress={onRightIconPress}>
-          <View style={styles.button}>
-            <MaterialIcons name={rightIcon} size={n(28)} color={iconColor} />
-          </View>
-        </HapticPressable>
-      );
-    }
-    return <View style={styles.button} />;
-  };
+  let leftButton = <View style={styles.button} />;
+  if (hideBackButton && leftAction && leftAction.show !== false) {
+    leftButton = (
+      <HapticPressable onPress={leftAction.onPress}>
+        <View style={styles.button}>
+          <MaterialIcons
+            color={iconColor}
+            name={leftAction.icon}
+            size={n(28)}
+          />
+        </View>
+      </HapticPressable>
+    );
+  } else if (!hideBackButton) {
+    leftButton = (
+      <HapticPressable onPress={handleBack}>
+        <View style={styles.button}>
+          <MaterialIcons color={iconColor} name="arrow-back-ios" size={n(28)} />
+        </View>
+      </HapticPressable>
+    );
+  }
 
   return (
     <View
@@ -85,11 +79,33 @@ export function Header({
         { backgroundColor: invertColors ? "white" : "black" },
       ]}
     >
-      {renderLeftButton()}
-      <StyledText style={styles.title} numberOfLines={1}>
-        {headerTitle}
-      </StyledText>
-      {renderRightButton()}
+      {leftButton}
+      {onTitlePress ? (
+        <HapticPressable onPress={onTitlePress} style={styles.titleWrapper}>
+          <StyledText numberOfLines={1} style={styles.title}>
+            {headerTitle}
+          </StyledText>
+        </HapticPressable>
+      ) : (
+        <View style={styles.titleWrapper}>
+          <StyledText numberOfLines={1} style={styles.title}>
+            {headerTitle}
+          </StyledText>
+        </View>
+      )}
+      {rightAction?.show !== false && rightAction?.icon ? (
+        <HapticPressable onPress={rightAction.onPress}>
+          <View style={styles.button}>
+            <MaterialIcons
+              color={iconColor}
+              name={rightAction.icon}
+              size={n(28)}
+            />
+          </View>
+        </HapticPressable>
+      ) : (
+        <View style={styles.button} />
+      )}
     </View>
   );
 }
@@ -107,7 +123,11 @@ const styles = StyleSheet.create({
     fontSize: n(20),
     fontFamily: "PublicSans-Regular",
     paddingTop: n(2),
-    maxWidth: "75%",
+    maxWidth: "100%",
+  },
+  titleWrapper: {
+    alignItems: "center",
+    flex: 1,
   },
   button: {
     width: n(32),
