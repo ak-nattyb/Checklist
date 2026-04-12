@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { ChecklistItem } from "@/components/ChecklistItem";
 import ContentContainer from "@/components/ContentContainer";
 import { StyledText } from "@/components/StyledText";
-import { isInboxList, useChecklistStore } from "@/contexts/ChecklistContext";
+import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { n } from "@/utils/scaling";
 
 export default function ListScreen() {
@@ -26,14 +26,11 @@ export default function ListScreen() {
       contentGap={16}
       contentWidth="wide"
       headerTitle={list.name}
-      onTitlePress={
-        isInboxList(id)
-          ? undefined
-          : () =>
-              router.push({
-                pathname: "/edit-title",
-                params: { id, type: "list" },
-              })
+      onTitlePress={() =>
+        router.push({
+          pathname: "/list-actions",
+          params: { id },
+        })
       }
       rightAction={{
         icon: "playlist-add",

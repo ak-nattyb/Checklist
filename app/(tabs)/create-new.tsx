@@ -26,7 +26,7 @@ export default function AddItemScreen() {
 
   return (
     <ContentContainer
-      headerTitle="Add Item"
+      headerTitle="Quick Add"
       hideBackButton
       rightAction={{
         icon: "arrow-forward",
