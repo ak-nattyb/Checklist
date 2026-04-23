@@ -40,7 +40,7 @@ export default function AddToListScreen() {
 
     addItem(itemText, selectedId);
     router.dismissTo({
-      pathname: "/(tabs)/create-new",
+      pathname: "/",
       params: {
         resetToken: `${Date.now()}`,
       },
