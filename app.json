@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Checklist",
-    "slug": "ak-checklist",
-    "version": "1.0.6",
+    "slug": "checklist",
+    "version": "1.1.0",
     "orientation": "portrait",
-    "scheme": "appname",
+    "scheme": "checklist",
     "newArchEnabled": true,
     "icon": "./assets/images/icon.png",
     "android": {
@@ -14,7 +14,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/PublicSans-Regular.ttf"
+          ]
+        }
+      ],
       "./plugins/withAndroidConfigChanges",
       "./plugins/withAndroidTheme"
     ],

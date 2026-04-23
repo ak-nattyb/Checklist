@@ -1,8 +1,11 @@
 const { createCanvas, registerFont } = require("canvas");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
-const fontPath = path.join(__dirname, "../assets/fonts/PublicSans-Regular.ttf");
+const fontPath = path.join(
+  import.meta.dirname,
+  "../assets/fonts/PublicSans-Regular.ttf"
+);
 registerFont(fontPath, { family: "PublicSans" });
 
 const appConfig = JSON.parse(fs.readFileSync("app.json", "utf8"));
@@ -19,13 +22,17 @@ ctx.fillRect(0, 0, size, size);
 ctx.fillStyle = "white";
 ctx.font = "85.4px PublicSans";
 ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.fillText(firstLetter, size / 2 - 1, size / 2 + 0.5);
+ctx.textBaseline = "alphabetic";
+const metrics = ctx.measureText(firstLetter);
+const y =
+  (size + metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
+  2;
+ctx.fillText(firstLetter, size / 2, y);
 
-const outputPath = path.join(__dirname, "../assets/images/icon.png");
+const outputPath = path.join(import.meta.dirname, "../assets/images/icon.png");
 const dir = path.dirname(outputPath);
 if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 const buffer = canvas.toBuffer("image/png");

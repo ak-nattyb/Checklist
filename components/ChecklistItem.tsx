@@ -1,184 +1,81 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { StyledText } from "./StyledText";
-import { HapticPressable } from "./HapticPressable";
-import { n } from "@/utils/scaling";
-import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { StyleSheet, View } from "react-native";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
-import { useJustifyText } from "@/contexts/JustifyTextContext";
+import { n } from "@/utils/scaling";
+import { HapticPressable } from "./HapticPressable";
+import { StyledText } from "./StyledText";
 
-interface ButtonProps {
+interface ChecklistItemProps {
   id: string;
   text: string;
-  location: string;
 }
 
-export function ChecklistItem({ text, id }: ButtonProps) {
+export function ChecklistItem({ id, text }: ChecklistItemProps) {
   const { invertColors } = useInvertColors();
-  const { displayMode } = useDisplayMode();
-  const { justifyText } = useJustifyText();
-
-  //written longer to be more verbose/readable
-  const isChecked = useChecklistStore((state) => {
-    const entry = state.entries.find((e) => e.id === id);
-    return entry?.kind === "item" ? entry.isChecked : false;
-  });
-
-  function flipChecked() {
-    useChecklistStore.getState().toggleItem(id);
-  }
+  const isChecked = useChecklistStore(
+    (state) => state.items.find((item) => item.id === id)?.isChecked ?? false
+  );
+  const toggleItem = useChecklistStore((state) => state.toggleItem);
+  const iconColor = invertColors ? "black" : "white";
+  const openItemActions = () =>
+    router.push({
+      pathname: "/item-actions",
+      params: { id },
+    } as never);
 
   return (
-    <View
-      style={
-        displayMode === "Lg"
-          ? LgStyles.primaryContainer //100%
-          : displayMode === "Md"
-            ? MdStyles.primaryContainer //75%
-            : SmStyles.primaryContainer //50%
-      }
-    >
-      {justifyText === "Left" ? (
-        <HapticPressable
-          onPress={flipChecked}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        >
-          <MaterialIcons
-            name={isChecked ? "check-box" : "check-box-outline-blank"}
-            size={
-              displayMode === "Lg"
-                ? n(36) //100%
-                : displayMode === "Md"
-                  ? n(28) //80%
-                  : n(21) //60%
-            }
-            color={invertColors ? "black" : "white"}
-          />
-        </HapticPressable>
-      ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          style={
-            displayMode === "Lg"
-              ? LgStyles.textContainer
-              : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
-          }
-        >
-          <StyledText
-            style={[
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text,
-              { textAlign: justifyText === "Right" ? "right" : "left" },
-            ]}
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
-        </HapticPressable>
-      )}
-      {justifyText === "Right" ? (
-        <HapticPressable
-          onPress={flipChecked}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-        >
-          <MaterialIcons
-            name={isChecked ? "check-box" : "check-box-outline-blank"}
-            size={
-              displayMode === "Lg"
-                ? n(36) //100%
-                : displayMode === "Md"
-                  ? n(28) //80%
-                  : n(21) //60%
-            }
-            color={invertColors ? "black" : "white"}
-          />
-        </HapticPressable>
-      ) : (
-        <HapticPressable
-          onPress={() => router.push(`/edit-title?id=${id}`)}
-          onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          style={
-            displayMode === "Lg"
-              ? LgStyles.textContainer
-              : displayMode === "Md"
-                ? MdStyles.textContainer
-                : SmStyles.textContainer
-          }
-        >
-          <StyledText
-            style={[
-              displayMode === "Lg"
-                ? LgStyles.text
-                : displayMode === "Md"
-                  ? MdStyles.text
-                  : SmStyles.text,
-              { textAlign: justifyText === "Left" ? "left" : "right" },
-            ]}
-            onPress={() => router.push(`/edit-title?id=${id}`)}
-            onLongPress={() => router.push(`/delete-item?id=${id}`)}
-          >
-            {text}
-          </StyledText>
-        </HapticPressable>
-      )}
+    <View style={[styles.container, isChecked && styles.checkedContainer]}>
+      <HapticPressable
+        onLongPress={openItemActions}
+        onPress={() => toggleItem(id)}
+        style={styles.iconButton}
+      >
+        <MaterialIcons
+          color={iconColor}
+          name={isChecked ? "check-box" : "check-box-outline-blank"}
+          size={n(28)}
+        />
+      </HapticPressable>
+      <HapticPressable
+        onLongPress={openItemActions}
+        onPress={() => toggleItem(id)}
+        style={styles.textContainer}
+      >
+        <StyledText style={[styles.text, isChecked && styles.checkedText]}>
+          {text}
+        </StyledText>
+      </HapticPressable>
     </View>
   );
 }
 
-const LgStyles = StyleSheet.create({
-  primaryContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+const styles = StyleSheet.create({
+  checkedContainer: {
+    opacity: 0.5,
+  },
+  checkedText: {
+    textDecorationLine: "line-through",
+  },
+  container: {
     alignItems: "flex-start",
-    gap: 10,
-  },
-  textContainer: {
-    flexShrink: 1,
-  },
-  text: {
-    fontSize: n(30),
-  },
-});
-
-const MdStyles = StyleSheet.create({
-  primaryContainer: {
-    width: "100%",
     flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: 8,
+    gap: n(14),
+    width: "100%",
   },
-  textContainer: {
-    flexShrink: 1,
+  iconButton: {
+    alignItems: "center",
+    height: n(28),
+    justifyContent: "center",
+    width: n(28),
   },
   text: {
     fontSize: n(24),
-  },
-});
-
-const SmStyles = StyleSheet.create({
-  primaryContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: 6,
+    includeFontPadding: false,
+    lineHeight: n(28),
   },
   textContainer: {
-    flexShrink: 1,
-  },
-  text: {
-    fontSize: n(18),
+    flex: 1,
   },
 });

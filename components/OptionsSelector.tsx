@@ -1,7 +1,5 @@
-import React from "react";
-import { router } from "expo-router";
-import { StyledButton } from "./StyledButton";
 import ContentContainer from "./ContentContainer";
+import { StyledButton } from "./StyledButton";
 
 interface Option {
   label: string;
@@ -9,11 +7,10 @@ interface Option {
 }
 
 interface OptionsSelectorProps {
-  title: string;
+  onSelect: (value: string) => void;
   options: Option[];
   selectedValue: string;
-  onSelect: (value: string) => void;
-  autoBack?: boolean;
+  title: string;
 }
 
 export function OptionsSelector({
@@ -21,21 +18,15 @@ export function OptionsSelector({
   options,
   selectedValue,
   onSelect,
-  autoBack = true,
 }: OptionsSelectorProps) {
-  const handleSelect = (value: string) => {
-    onSelect(value);
-    if (autoBack) router.back();
-  };
-
   return (
     <ContentContainer headerTitle={title}>
       {options.map((option) => (
         <StyledButton
           key={option.value}
+          onPress={() => onSelect(option.value)}
+          selected={selectedValue === option.value}
           text={option.label}
-          onPress={() => handleSelect(option.value)}
-          underline={selectedValue === option.value}
         />
       ))}
     </ContentContainer>

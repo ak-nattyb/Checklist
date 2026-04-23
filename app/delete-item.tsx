@@ -1,77 +1,71 @@
-import React, { useRef } from "react";
-import { View, StyleSheet } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { StyleSheet } from "react-native";
 import ContentContainer from "@/components/ContentContainer";
-import { StyledText } from "@/components/StyledText";
 import { HapticPressable } from "@/components/HapticPressable";
-import { useInvertColors } from "@/contexts/InvertColorsContext";
-import { n } from "@/utils/scaling";
+import { StyledText } from "@/components/StyledText";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
+import { useInvertColors } from "@/contexts/InvertColorsContext";
+import { getListHref } from "@/utils/routes";
+import { n } from "@/utils/scaling";
 
 export default function DeleteItemScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-
-  //have to do some tricks to preserve the item name as it's being deleted
-  const liveItemName = useChecklistStore().getEntryName(id);
-  const itemName = useRef(liveItemName).current;
-
-  //single line function here
-  const deleteItem = useChecklistStore((state) => state.deleteEntry);
-  const router = useRouter();
+  const { id = "" } = useLocalSearchParams<{ id?: string }>();
+  const item = useChecklistStore((state) =>
+    state.items.find((candidate) => candidate.id === id)
+  );
+  const deleteItem = useChecklistStore((state) => state.deleteItem);
   const { invertColors } = useInvertColors();
-
-  function handleConfirm() {
-    deleteItem(id);
-    router.back();
-  }
-  function handleCancel() {
-    router.back();
-  }
-
   const textColor = invertColors ? "black" : "white";
 
-  return (
-    <ContentContainer headerTitle={"Delete Entry"}>
-      <StyledText style={styles.messageText}>
-        {`Are you sure you want to delete ${itemName}?`}
-      </StyledText>
+  const handleDelete = () => {
+    if (item) {
+      deleteItem(item.id);
+      router.dismissTo(getListHref(item.listId));
+      return;
+    }
 
-      <View style={styles.buttonContainer}>
-        <HapticPressable onPress={handleConfirm} style={styles.button}>
+    router.dismissTo("/(tabs)");
+  };
+
+  if (!item) {
+    return (
+      <ContentContainer contentGap={20} headerTitle="Delete Item">
+        <StyledText style={styles.messageText}>Item not found.</StyledText>
+      </ContentContainer>
+    );
+  }
+
+  return (
+    <ContentContainer
+      contentGap={20}
+      footer={
+        <HapticPressable onPress={handleDelete} style={styles.button}>
           <StyledText style={[styles.buttonText, { color: textColor }]}>
-            {"yes"}
+            DELETE
           </StyledText>
         </HapticPressable>
-        <HapticPressable onPress={handleCancel} style={styles.button}>
-          <StyledText style={[styles.buttonText, { color: textColor }]}>
-            {"no"}
-          </StyledText>
-        </HapticPressable>
-      </View>
+      }
+      headerTitle="Delete Item"
+    >
+      <StyledText style={styles.messageText}>
+        {`Are you sure you want to delete ${item.text}?`}
+      </StyledText>
     </ContentContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  messageText: {
-    fontSize: n(18),
-    marginTop: n(10),
-  },
-  buttonContainer: {
-    width: "100%",
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
   button: {
-    paddingVertical: n(15),
-    paddingHorizontal: n(30),
     alignItems: "center",
-    justifyContent: "flex-end",
     minWidth: n(200),
+    width: "100%",
   },
   buttonText: {
-    fontSize: n(30),
+    fontSize: n(40),
+    textAlign: "center",
     textTransform: "uppercase",
+  },
+  messageText: {
+    fontSize: n(18),
   },
 });

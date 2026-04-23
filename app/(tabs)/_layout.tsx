@@ -1,13 +1,12 @@
-import React from "react";
 import { Tabs } from "expo-router";
-import { Navbar, TabConfigItem } from "@/components/Navbar";
+import { Navbar, type TabConfigItem } from "@/components/Navbar";
 
 export const TABS_CONFIG: readonly TabConfigItem[] = [
-  { name: "Items", screenName: "index", iconName: "list" },
+  { name: "Lists", screenName: "index", iconName: "list" },
   {
-    name: "Add New Item",
+    name: "Add",
     screenName: "create-new",
-    iconName: "add-circle-outline",
+    iconName: "add",
   },
   { name: "Settings", screenName: "settings", iconName: "settings" },
 ] as const;
@@ -19,9 +18,9 @@ export default function TabLayout() {
         const activeScreenName = props.state.routes[props.state.index].name;
         return (
           <Navbar
-            tabsConfig={TABS_CONFIG}
             currentScreenName={activeScreenName}
             navigation={props.navigation}
+            tabsConfig={TABS_CONFIG}
           />
         );
       }}

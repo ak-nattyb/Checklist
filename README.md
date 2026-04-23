@@ -1,34 +1,35 @@
 <img src="assets/images/example.png" alt="Checklist Screenshots">
 
-<p>A app that adds a simple list with checkbox functionality for Light Phone/Luma users.</p>
+<p>A simple checklist app with list-based organization for Light Phone/Luma users.</p>
 
 ![GitHub License](https://img.shields.io/github/license/ak-nattyb/Checklist)
 ![GitHub Release](https://img.shields.io/github/v/release/ak-nattyb/Checklist)
 
 ## Installation
 
-The lastest .apk file is available in [releases](https://github.com/ak-nattyb/Checklist/releases/latest).
+The latest .apk file is available in [releases](https://github.com/ak-nattyb/Checklist/releases/latest).
 
 I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding the repository's URL to receive updates.
 
 ## Features
 
-- Press + to add an item
-- Press on item icon to check/uncheck
-- Long Press + to add a folder
-- Press on folder icon to navigate to folder
-- Press on item/folder title to rename
-- Long press on item/folder to delete
-- Press on delete icon to delete multiple checked items
+- Press the header + to create a list
+- Press on a list row to open a list
+- Long press on a list row to rename, duplicate, copy as Markdown, or delete it
+- Press on an open list's header title to rename it
+- Inbox is always available and cannot be deleted
+- Press the bottom + to add an item, then choose a list for it
+- Create a new list from the add-to-list screen
+- Press on an item icon to check/uncheck
+- Press on an item title to rename it
 - Checklist stores and persists between app loads/unloads and phone restarts
-- Change spacing between Small, Medium, and Large (defaults to Medium)
-- Change list alignment between Left and Right
+- Invert colors from Settings
 
 ## Acknowledgements
 
 Huge thank you to the following projects:
 
-- Vandamd's Light Template: [light-template]https://github.com/vandamd/light-template
+- Vandamd's Light Template: [light-template](https://github.com/vandamd/light-template)
 
 ## Support
 

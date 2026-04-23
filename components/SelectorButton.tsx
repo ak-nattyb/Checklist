@@ -1,23 +1,19 @@
-import React from "react";
+import { type Href, router } from "expo-router";
 import { StyleSheet } from "react-native";
-import { StyledText } from "./StyledText";
-import { HapticPressable } from "./HapticPressable";
-import { router } from "expo-router";
 import { n } from "@/utils/scaling";
+import { HapticPressable } from "./HapticPressable";
+import { StyledText } from "./StyledText";
 
 interface SelectorButtonProps {
+  href: Href;
   label: string;
   value: string;
-  href: string;
 }
 
 export function SelectorButton({ label, value, href }: SelectorButtonProps) {
   return (
-    <HapticPressable
-      style={styles.button}
-      onPress={() => router.push(href as any)}
-    >
-      <StyledText style={styles.label} numberOfLines={1}>
+    <HapticPressable onPress={() => router.push(href)} style={styles.button}>
+      <StyledText numberOfLines={1} style={styles.label}>
         {label}
       </StyledText>
       <StyledText style={styles.value}>{value}</StyledText>
@@ -28,9 +24,6 @@ export function SelectorButton({ label, value, href }: SelectorButtonProps) {
 const styles = StyleSheet.create({
   button: {
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: 0,
   },
   label: {
     fontSize: n(20),
