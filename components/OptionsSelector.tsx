@@ -1,24 +1,24 @@
 import ContentContainer from "./ContentContainer";
 import { StyledButton } from "./StyledButton";
 
-interface Option {
+interface Option<Value extends string = string> {
   label: string;
-  value: string;
+  value: Value;
 }
 
-interface OptionsSelectorProps {
-  onSelect: (value: string) => void;
-  options: Option[];
-  selectedValue: string;
+interface OptionsSelectorProps<Value extends string> {
+  onSelect: (value: Value) => void;
+  options: Option<Value>[];
+  selectedValue: Value;
   title: string;
 }
 
-export function OptionsSelector({
+export function OptionsSelector<Value extends string>({
   title,
   options,
   selectedValue,
   onSelect,
-}: OptionsSelectorProps) {
+}: OptionsSelectorProps<Value>) {
   return (
     <ContentContainer headerTitle={title}>
       {options.map((option) => (

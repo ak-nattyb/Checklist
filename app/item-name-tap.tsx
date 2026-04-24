@@ -1,6 +1,5 @@
 import { OptionsSelector } from "@/components/OptionsSelector";
 import {
-  type ItemNameTapAction,
   itemNameTapOptions,
   useItemNameTap,
 } from "@/contexts/ItemNameTapContext";
@@ -10,7 +9,7 @@ export default function ItemNameTapScreen() {
 
   return (
     <OptionsSelector
-      onSelect={(value) => setItemNameTapAction(value as ItemNameTapAction)}
+      onSelect={setItemNameTapAction}
       options={itemNameTapOptions}
       selectedValue={itemNameTapAction}
       title="Item name tap"

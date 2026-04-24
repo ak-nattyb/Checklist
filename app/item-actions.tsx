@@ -16,10 +16,12 @@ export default function ItemActionsScreen() {
   const allItems = useChecklistStore((state) => state.items);
   const duplicateItem = useChecklistStore((state) => state.duplicateItem);
   const [copied, setCopied] = useState(false);
-  const listItems = item
-    ? allItems.filter((candidate) => candidate.listId === item.listId)
-    : [];
-  const canMoveWithinList = listItems.length > 1;
+  const canMoveWithinList = item
+    ? allItems.some(
+        (candidate) =>
+          candidate.listId === item.listId && candidate.id !== item.id
+      )
+    : false;
 
   if (!item) {
     return (
