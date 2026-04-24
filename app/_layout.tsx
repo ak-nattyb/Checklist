@@ -9,6 +9,7 @@ import {
   InvertColorsProvider,
   useInvertColors,
 } from "@/contexts/InvertColorsContext";
+import { ItemNameTapProvider } from "@/contexts/ItemNameTapContext";
 
 function RootNavigation() {
   const { invertColors } = useInvertColors();
@@ -35,6 +36,7 @@ function RootNavigation() {
       <Stack.Screen name="create-list" />
       <Stack.Screen name="delete-list" />
       <Stack.Screen name="edit-title" />
+      <Stack.Screen name="item-name-tap" />
       <Stack.Screen name="list/[id]" />
       <Stack.Screen name="list-actions" />
       <Stack.Screen name="manage-items" />
@@ -66,7 +68,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <InvertColorsProvider>
-        <RootNavigation />
+        <ItemNameTapProvider>
+          <RootNavigation />
+        </ItemNameTapProvider>
       </InvertColorsProvider>
     </GestureHandlerRootView>
   );
