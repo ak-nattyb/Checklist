@@ -13,8 +13,15 @@ export default function ItemActionsScreen() {
   const item = useChecklistStore((state) =>
     state.items.find((candidate) => candidate.id === id)
   );
+  const allItems = useChecklistStore((state) => state.items);
   const duplicateItem = useChecklistStore((state) => state.duplicateItem);
   const [copied, setCopied] = useState(false);
+  const canMoveWithinList = item
+    ? allItems.some(
+        (candidate) =>
+          candidate.listId === item.listId && candidate.id !== item.id
+      )
+    : false;
 
   if (!item) {
     return (
@@ -57,6 +64,17 @@ export default function ItemActionsScreen() {
         text="Delete"
       />
       <StyledButton onPress={handleDuplicate} text="Duplicate" />
+      {canMoveWithinList && (
+        <StyledButton
+          onPress={() =>
+            router.push({
+              pathname: "/manage-items",
+              params: { id: item.listId },
+            } as never)
+          }
+          text="Move up/down"
+        />
+      )}
       <StyledButton
         onPress={() =>
           router.push({
@@ -64,7 +82,7 @@ export default function ItemActionsScreen() {
             params: { id: item.id },
           } as never)
         }
-        text="Move"
+        text="Move to list"
       />
       <StyledButton onPress={handleCopy} text={copied ? "Copied" : "Copy"} />
     </ContentContainer>

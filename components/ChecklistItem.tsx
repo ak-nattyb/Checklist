@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
+import { useItemNameTap } from "@/contexts/ItemNameTapContext";
 import { n } from "@/utils/scaling";
 import { HapticPressable } from "./HapticPressable";
 import { StyledText } from "./StyledText";
@@ -14,6 +15,7 @@ interface ChecklistItemProps {
 
 export function ChecklistItem({ id, text }: ChecklistItemProps) {
   const { invertColors } = useInvertColors();
+  const { itemNameTapAction } = useItemNameTap();
   const isChecked = useChecklistStore(
     (state) => state.items.find((item) => item.id === id)?.isChecked ?? false
   );
@@ -24,6 +26,17 @@ export function ChecklistItem({ id, text }: ChecklistItemProps) {
       pathname: "/item-actions",
       params: { id },
     } as never);
+  const handleNamePress = () => {
+    if (itemNameTapAction === "rename") {
+      router.push({
+        pathname: "/edit-title",
+        params: { id, type: "item" },
+      } as never);
+      return;
+    }
+
+    toggleItem(id);
+  };
 
   return (
     <View style={[styles.container, isChecked && styles.checkedContainer]}>
@@ -40,7 +53,7 @@ export function ChecklistItem({ id, text }: ChecklistItemProps) {
       </HapticPressable>
       <HapticPressable
         onLongPress={openItemActions}
-        onPress={() => toggleItem(id)}
+        onPress={handleNamePress}
         style={styles.textContainer}
       >
         <StyledText style={[styles.text, isChecked && styles.checkedText]}>
