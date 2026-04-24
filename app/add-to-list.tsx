@@ -23,10 +23,10 @@ export default function AddToListScreen() {
   const lists = useChecklistStore((state) => state.lists);
   const addItem = useChecklistStore((state) => state.addItem);
   const { invertColors } = useInvertColors();
-  const [selectedId, setSelectedId] = useState(selectedListId ?? "");
+  const [selectedId, setSelectedId] = useState(selectedListId ?? INBOX_LIST_ID);
 
   useEffect(() => {
-    setSelectedId(selectedListId ?? "");
+    setSelectedId(selectedListId ?? INBOX_LIST_ID);
   }, [selectedListId]);
 
   const itemText = itemName?.trim() ?? "";
