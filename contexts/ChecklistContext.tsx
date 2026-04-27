@@ -24,6 +24,11 @@ export interface ChecklistItem {
 interface ChecklistStore {
   activeListId: string;
   addItem: (text: string, listId: string) => string;
+  addRecurringItem: (
+    text: string,
+    listId: string,
+    recurringIncrement: string,
+  ) => string;
   addList: (name: string) => string;
   changeListIcon: (id: string, iconName: ListIconName) => void;
   deleteItem: (id: string) => void;
@@ -75,7 +80,7 @@ const makeId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 const ensureUniqueId = (
   candidate: string | undefined,
-  usedIds: Set<string>
+  usedIds: Set<string>,
 ) => {
   const baseId = candidate?.trim() || makeId();
   let id = baseId;
@@ -125,7 +130,7 @@ const ensureInboxList = (state: PersistedState): PersistedState => {
       items: state.items.map((item) =>
         item.listId === inboxByName.id
           ? { ...item, listId: INBOX_LIST_ID }
-          : item
+          : item,
       ),
       lists: [
         { ...inboxByName, iconName: INBOX_ICON, id: INBOX_LIST_ID },
@@ -143,32 +148,32 @@ const ensureInboxList = (state: PersistedState): PersistedState => {
 const isChecklistList = (value: unknown): value is ChecklistList =>
   Boolean(
     value &&
-      typeof value === "object" &&
-      typeof (value as ChecklistList).id === "string" &&
-      typeof (value as ChecklistList).name === "string"
+    typeof value === "object" &&
+    typeof (value as ChecklistList).id === "string" &&
+    typeof (value as ChecklistList).name === "string",
   );
 
 const isChecklistItem = (value: unknown): value is ChecklistItem =>
   Boolean(
     value &&
-      typeof value === "object" &&
-      typeof (value as ChecklistItem).id === "string" &&
-      typeof (value as ChecklistItem).text === "string" &&
-      typeof (value as ChecklistItem).listId === "string"
+    typeof value === "object" &&
+    typeof (value as ChecklistItem).id === "string" &&
+    typeof (value as ChecklistItem).text === "string" &&
+    typeof (value as ChecklistItem).listId === "string",
   );
 
 const isOldChecklistEntry = (value: unknown): value is OldChecklistEntry =>
   Boolean(
     value &&
-      typeof value === "object" &&
-      ((value as OldChecklistEntry).kind === "folder" ||
-        (value as OldChecklistEntry).kind === "item") &&
-      typeof (value as OldChecklistEntry).id === "string" &&
-      typeof (value as OldChecklistEntry).text === "string"
+    typeof value === "object" &&
+    ((value as OldChecklistEntry).kind === "folder" ||
+      (value as OldChecklistEntry).kind === "item") &&
+    typeof (value as OldChecklistEntry).id === "string" &&
+    typeof (value as OldChecklistEntry).text === "string",
   );
 
 const migrateCurrentState = (
-  state: PersistedChecklistState
+  state: PersistedChecklistState,
 ): PersistedState => {
   const usedIds = new Set<string>();
   const lists = (state.lists ?? []).filter(isChecklistList).map((list) => ({
@@ -247,7 +252,7 @@ const migrateOldEntries = (state: PersistedChecklistState): PersistedState => {
 };
 
 export const migrateChecklistState = (
-  persistedState: unknown
+  persistedState: unknown,
 ): PersistedState => {
   if (!persistedState || typeof persistedState !== "object") {
     return ensureInboxList({ activeListId: "", items: [], lists: [] });
@@ -285,6 +290,23 @@ export const useChecklistStore = create<ChecklistStore>()(
         return id;
       },
 
+      addRecurringItem: (text, listId, recurringIncrement) => {
+        const id = makeId();
+        set((state) => ({
+          items: [
+            ...state.items,
+            {
+              id,
+              isChecked: false,
+              listId,
+              recurringIncrement,
+              text: cleanName(text, "Untitled Item"),
+            },
+          ],
+        }));
+        return id;
+      },
+
       addList: (name) => {
         const id = makeId();
         set((state) => ({
@@ -309,7 +331,7 @@ export const useChecklistStore = create<ChecklistStore>()(
           lists: state.lists.map((list) =>
             list.id === id
               ? { ...list, iconName: getSafeListIconName(iconName) }
-              : list
+              : list,
           ),
         }));
       },
@@ -408,7 +430,7 @@ export const useChecklistStore = create<ChecklistStore>()(
 
           return {
             items: state.items.map((item) =>
-              item.id === id ? { ...item, listId } : item
+              item.id === id ? { ...item, listId } : item,
             ),
           };
         }),
@@ -421,10 +443,10 @@ export const useChecklistStore = create<ChecklistStore>()(
           }
 
           const listItems = state.items.filter(
-            (candidate) => candidate.listId === item.listId
+            (candidate) => candidate.listId === item.listId,
           );
           const currentIndex = listItems.findIndex(
-            (candidate) => candidate.id === id
+            (candidate) => candidate.id === id,
           );
 
           if (currentIndex < 0) {
@@ -450,7 +472,7 @@ export const useChecklistStore = create<ChecklistStore>()(
             items: state.items.map((candidate) =>
               candidate.listId === item.listId
                 ? reorderedListItems[reorderedIndex++]
-                : candidate
+                : candidate,
             ),
           };
         }),
@@ -491,7 +513,7 @@ export const useChecklistStore = create<ChecklistStore>()(
           items: state.items.map((item) =>
             item.id === id
               ? { ...item, text: cleanName(text, "Untitled Item") }
-              : item
+              : item,
           ),
         })),
 
@@ -504,7 +526,7 @@ export const useChecklistStore = create<ChecklistStore>()(
           lists: state.lists.map((list) =>
             list.id === id
               ? { ...list, name: cleanName(name, "Untitled List") }
-              : list
+              : list,
           ),
         }));
       },
@@ -514,7 +536,7 @@ export const useChecklistStore = create<ChecklistStore>()(
       toggleItem: (id) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id ? { ...item, isChecked: !item.isChecked } : item
+            item.id === id ? { ...item, isChecked: !item.isChecked } : item,
           ),
         })),
     }),
@@ -528,6 +550,6 @@ export const useChecklistStore = create<ChecklistStore>()(
       }),
       storage: createJSONStorage(() => AsyncStorage),
       version: STORAGE_VERSION,
-    }
-  )
+    },
+  ),
 );

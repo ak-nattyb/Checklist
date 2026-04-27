@@ -11,8 +11,9 @@ export default function AddItemScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      setItemName("");
       setInputKey((currentKey) => currentKey + 1);
-    }, [])
+    }, []),
   );
 
   useEffect(() => {
