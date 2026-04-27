@@ -29,10 +29,10 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 
 Huge thank you to the following projects:
 
-- Vandamd's Light Template: [light-template](https://github.com/vandamd/light-template)
+- Vandam's Light Template: [light-template](https://github.com/vandamd/light-template)
 
 ## Support
 
-Send me (rustybeets) or Vandamd (Vandam) a message on the Light Phone discord if you run into any issues!
+Send me (rustybeets) or Vandam (Vandam) a message on the Light Phone discord if you run into any issues!
 
-If you find this app useful and want more apps like it to exist, [consider sponsoring Vadamd](https://github.com/sponsors/vandamd)! :)
+If you find this app useful and want more apps like it to exist, [consider sponsoring Vadam](https://github.com/sponsors/vandamd)! :)
