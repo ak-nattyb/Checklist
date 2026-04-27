@@ -23,7 +23,7 @@ I recommend using [Obtainium](https://github.com/ImranR98/Obtainium) and adding 
 - Press on an item icon to check/uncheck
 - Press on an item title to rename it
 - Checklist stores and persists between app loads/unloads and phone restarts
-- Invert colors from Settings
+- Invert colors and change Item Name Tap default behavior from Settings
 
 ## Acknowledgements
 
