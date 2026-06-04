@@ -40,12 +40,8 @@ export default function ListScreen() {
           })
         }
         rightAction={{
-          icon: "add",
-          onPress: () =>
-            router.push({
-              pathname: "/add-item",
-              params: { listId: id },
-            } as never),
+          icon: "delete-outline",
+          onPress: () => console.log("remove checked items ph"),
         }}
         scrollable={items.length > 0}
         style={
