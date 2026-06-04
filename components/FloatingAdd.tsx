@@ -5,7 +5,7 @@ import { useInvertColors } from "@/contexts/InvertColorsContext";
 import { n } from "@/utils/scaling";
 import { HapticPressable } from "./HapticPressable";
 
-export function Navbar() {
+export function FloatingAdd() {
   const { invertColors } = useInvertColors();
 
   return (
@@ -14,7 +14,11 @@ export function Navbar() {
         styles.navbar,
         { backgroundColor: invertColors ? "white" : "black" },
       ]}
-    ></View>
+    >
+      <HapticPressable onPress={() => console.log("add!")}>
+        <MaterialIcons name="add" size={n(48)} />
+      </HapticPressable>
+    </View>
   );
 }
 
