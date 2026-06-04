@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd86fc08-ccd2-40b5-a759-bc194c939025" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/list/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/list/[id].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/ChecklistContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChecklistContext.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="cd86fc08-ccd2-40b5-a759-bc194c939025" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
