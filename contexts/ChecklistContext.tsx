@@ -369,7 +369,7 @@ export const useChecklistStore = create<ChecklistStore>()(
       deleteCheckedItemsInList(id) {
         set((state) => ({
           items: state.items.filter(
-            (item) => item.listId === id && !item.isChecked,
+            (item) => item.listId !== id || !item.isChecked,
           ),
         }));
       },
