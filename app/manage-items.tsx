@@ -12,11 +12,11 @@ import { n } from "@/utils/scaling";
 export default function ManageItemsScreen() {
   const { id = "" } = useLocalSearchParams<{ id?: string }>();
   const list = useChecklistStore((state) =>
-    state.lists.find((candidate) => candidate.id === id)
+    state.lists.find((candidate) => candidate.id === id),
   );
   const allItems = useChecklistStore((state) => state.items);
   const moveItemWithinList = useChecklistStore(
-    (state) => state.moveItemWithinList
+    (state) => state.moveItemWithinList,
   );
   const { invertColors } = useInvertColors();
   const [hasScrollIndicator, setHasScrollIndicator] = useState(false);
@@ -28,14 +28,14 @@ export default function ManageItemsScreen() {
   useFocusEffect(
     useCallback(() => {
       setSelectedItemIds([]);
-    }, [])
+    }, []),
   );
 
   const toggleSelection = (itemId: string) => {
     setSelectedItemIds((currentIds) =>
       currentIds.includes(itemId)
         ? currentIds.filter((currentId) => currentId !== itemId)
-        : [...currentIds, itemId]
+        : [...currentIds, itemId],
     );
   };
 
@@ -104,7 +104,10 @@ export default function ManageItemsScreen() {
                 onPress={() => toggleSelection(item.id)}
                 style={styles.textContainer}
               >
-                <StyledText numberOfLines={1} style={styles.text}>
+                <StyledText
+                  numberOfLines={1}
+                  style={item.isChecked ? styles.checkedText : styles.text}
+                >
                   {item.text}
                 </StyledText>
               </HapticPressable>
@@ -180,6 +183,13 @@ const styles = StyleSheet.create({
     fontSize: n(24),
     includeFontPadding: false,
     lineHeight: n(28),
+  },
+  checkedText: {
+    fontSize: n(24),
+    includeFontPadding: false,
+    lineHeight: n(28),
+    textDecorationLine: "line-through",
+    opacity: 0.5,
   },
   textContainer: {
     flex: 1,

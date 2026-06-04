@@ -5,7 +5,6 @@ import { StyledText } from "@/components/StyledText";
 import { useChecklistStore } from "@/contexts/ChecklistContext";
 import { n } from "@/utils/scaling";
 import { View, StyleSheet } from "react-native";
-import { FloatingAdd } from "@/components/FloatingAdd";
 import { HapticPressable } from "@/components/HapticPressable";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useInvertColors } from "@/contexts/InvertColorsContext";
@@ -18,6 +17,12 @@ export default function ListScreen() {
   const allItems = useChecklistStore((state) => state.items);
   const items = allItems.filter((item) => item.listId === id);
   const { invertColors } = useInvertColors();
+  const checkForCheckedItemsInList = useChecklistStore(
+    (state) => state.checkForCheckedItemsInList,
+  );
+  const deleteCheckedItemsInList = useChecklistStore(
+    (state) => state.deleteCheckedItemsInList,
+  );
 
   if (!list) {
     return (
@@ -41,7 +46,8 @@ export default function ListScreen() {
         }
         rightAction={{
           icon: "delete-outline",
-          onPress: () => console.log("remove checked items ph"),
+          onPress: () => deleteCheckedItemsInList(id),
+          show: checkForCheckedItemsInList(id),
         }}
         scrollable={items.length > 0}
         style={
