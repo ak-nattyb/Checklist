@@ -30,9 +30,11 @@ interface ChecklistStore {
     recurringIncrement: string,
   ) => string;
   addList: (name: string) => string;
+  checkForCheckedItemsInList: (id: string) => boolean;
   changeListIcon: (id: string, iconName: ListIconName) => void;
   deleteItem: (id: string) => void;
   deleteItems: (ids: string[]) => void;
+  deleteCheckedItemsInList: (id: string) => void;
   deleteList: (id: string) => void;
   duplicateItem: (id: string) => string | undefined;
   duplicateList: (id: string) => string | undefined;
@@ -322,6 +324,19 @@ export const useChecklistStore = create<ChecklistStore>()(
         return id;
       },
 
+      checkForCheckedItemsInList(id) {
+        let hasCheckedItems = false;
+
+        if (
+          get().items.filter((item) => item.listId === id && item.isChecked)
+            .length > 0
+        ) {
+          hasCheckedItems = true;
+        }
+
+        return hasCheckedItems;
+      },
+
       changeListIcon: (id, iconName) => {
         if (isInboxList(id)) {
           return;
@@ -348,6 +363,14 @@ export const useChecklistStore = create<ChecklistStore>()(
 
         set((state) => ({
           items: state.items.filter((item) => !idsToDelete.has(item.id)),
+        }));
+      },
+
+      deleteCheckedItemsInList(id) {
+        set((state) => ({
+          items: state.items.filter(
+            (item) => item.listId === id && !item.isChecked,
+          ),
         }));
       },
 
