@@ -17,6 +17,8 @@ interface NavbarProps {
   tabsConfig?: readonly TabConfigItem[];
 }
 
+//look into renaming isActive variable to be something more descriptive.
+//It is a bit ambiguous here
 const getTabColor = (isActive: boolean, inverted: boolean) => {
   if (isActive) {
     return inverted ? "black" : "white";
@@ -46,7 +48,7 @@ export function Navbar({
           <MaterialIcons
             color={getTabColor(
               tab.screenName === currentScreenName,
-              invertColors
+              invertColors,
             )}
             name={tab.iconName}
             size={n(48)}
